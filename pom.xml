@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.booking-app</groupId>
-	<artifactId>booking-app-backend</artifactId>
+	<artifactId>shopzone-app-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>booking-app-backend</name>
 	<description>Demo project for Spring Boot</description>
