@@ -1,0 +1,221 @@
+Spring Boot: Full Configuration for @Async and @Scheduled
+📦 Step 1: Add Required Dependency
+Spring Boot already includes support for these in the spring-boot-starter packages.
+
+If not already present, add this to pom.xml (for Maven):
+
+xml
+Copy
+Edit
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter</artifactId>
+</dependency>
+Or for Gradle:
+
+groovy
+Copy
+Edit
+implementation 'org.springframework.boot:spring-boot-starter'
+🧩 Step 2: Enable Async and Scheduling
+In your main Spring Boot application class:
+
+java
+Copy
+Edit
+@SpringBootApplication
+@EnableAsync         // Enables support for @Async
+@EnableScheduling    // Enables support for @Scheduled
+public class MyAppApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(MyAppApplication.class, args);
+    }
+}
+⚙️ Step 3: Configure TaskExecutor for @Async
+java
+Copy
+Edit
+@Configuration
+@EnableAsync         //annotate on this or on main class---to Enables support for @Async
+public class AsyncConfig {
+
+    @Bean(name = "taskExecutor")
+    public Executor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(5);           // Minimum number of threads
+        executor.setMaxPoolSize(10);           // Maximum threads that can be created
+        executor.setQueueCapacity(100);        // Tasks waiting when all threads are busy
+        executor.setThreadNamePrefix("Async-"); // Naming for easier debugging
+        executor.initialize();
+        return executor;
+    }
+}
+⚙️ Step 4: Configure TaskScheduler for @Scheduled (Optional but Recommended)
+java
+Copy
+Edit
+@Configuration
+@EnableScheduling 
+public class SchedulerConfig {
+
+    @Bean
+    public TaskScheduler taskScheduler() {
+        ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+        scheduler.setPoolSize(5);                 // Number of parallel scheduled tasks allowed
+        scheduler.setThreadNamePrefix("Scheduled-"); // Thread name prefix
+        scheduler.initialize();
+        return scheduler;
+    }
+}
+If you don’t configure this, Spring uses a single-threaded scheduler by default.
+
+🔧 Example: Async Service
+java
+Copy
+Edit
+@Service
+public class EmailService {
+
+    @Async("taskExecutor")
+    public void sendWelcomeEmail(String email) {
+        System.out.println("Sending email to " + email + " in thread: " + Thread.currentThread().getName());
+        try {
+            Thread.sleep(3000); // Simulate delay
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+⏰ Example: Scheduled Task
+java
+Copy
+Edit
+@Component
+public class CleanupJob {
+
+    // Runs every 10 seconds, regardless of how long the task takes
+    @Scheduled(fixedRate = 10000)
+    public void runFixedRate() {
+        System.out.println("Fixed Rate task at: " + LocalDateTime.now());
+    }
+
+    // Waits for completion, then waits 5 seconds
+    @Scheduled(fixedDelay = 5000)
+    public void runFixedDelay() {
+        System.out.println("Fixed Delay task starts at: " + LocalDateTime.now());
+    }
+
+    // Runs every day at 6:00 AM
+    @Scheduled(cron = "0 0 6 * * ?")
+    public void runDailyJob() {
+        System.out.println("Running daily job at 6 AM");
+    }
+}
+
+✅ What does fixedDelay mean?
+It means:
+"Wait for the task to finish, then wait X milliseconds, then run again."
+
+📘 Syntax:
+java
+Copy
+Edit
+@Scheduled(fixedDelay = 5000) // 5 seconds
+public void myTask() {
+    // your logic here
+}
+🧠 How it works (timeline):
+Imagine the method takes 3 seconds to complete:
+
+Time	Action
+0s	Task starts
+3s	Task ends
+3s–8s	Wait 5 seconds
+8s	Task starts again
+...	and so on
+
+⏱ The delay countdown starts after the task finishes.
+
+🔁 Compare to fixedRate
+java
+Copy
+Edit
+@Scheduled(fixedRate = 5000)
+public void myTask() {
+    // your logic
+}
+Time	Action
+0s	Task starts
+3s	Task ends
+5s	Next task starts (counted from 0s, not from 3s)
+8s	Second task ends
+10s	Third task starts
+...	and so on
+
+✅ fixedRate waits from the start of the last run, regardless of how long it takes.
+
+🧪 Real-World Use Case for fixedDelay
+java
+Copy
+Edit
+@Scheduled(fixedDelay = 10000)
+public void pollEmailInbox() {
+    System.out.println("Checking inbox at: " + LocalDateTime.now());
+}
+✅ This is good for tasks where:
+
+You don’t want overlap
+
+You want to wait until it's done before restarting
+
+You need time between jobs
+
+Examples:
+
+Polling an API
+
+File system scan
+
+Cleanup tasks
+
+🟡 Beware of Long Task Duration
+If your task runs longer than the delay (e.g., delay = 5s, task takes 8s), that’s fine:
+
+The next run will wait until the 8s finishes, then wait 5 more seconds
+
+You won't get concurrent executions (unless explicitly allowed)
+
+If you do want overlapping tasks, you'd use fixedRate instead.
+
+✅ Summary
+Scheduler Type	Starts Next Run…	Overlapping Possible?
+fixedDelay	After task ends + delay	❌ No
+fixedRate	After last start time + interval	✅ Yes
+cron	At exact times (like 6:00 AM)	Depends on config
+
+
+🧠 Explanation of Key Terms
+For TaskExecutor:
+Property	Description
+corePoolSize	Minimum threads always kept alive
+maxPoolSize	Max threads before tasks are queued
+queueCapacity	Number of tasks to wait in line if all threads are busy
+threadNamePrefix	Helps you identify the thread in logs or debugger
+
+For TaskScheduler:
+Property	Description
+poolSize	Number of parallel scheduled tasks that can run
+threadNamePrefix	Helps trace scheduled thread activity
+
+🧪 Sample Output (Console Logs)
+css
+Copy
+Edit
+Sending email to user@example.com in thread: Async-1
+Fixed Rate task at: 2025-05-21T12:00:10
+Fixed Delay task starts at: 2025-05-21T12:00:15
+✅ Summary
+Feature	Annotation	Required Config	Purpose
+Asynchronous	@Async	TaskExecutor bean	Background non-blocking tasks
+Scheduled Tasks	@Scheduled	TaskScheduler bean	Time-based jobs (cron/fixed)
+

@@ -1,0 +1,96 @@
+Designing a UserService class in a Spring Boot application with methods that are useful across multiple application types (e.g., REST APIs, web apps, microservices, etc.) means keeping the service generic, modular, and reusable.
+
+Here’s a suggested list of methods for a versatile UserService:
+
+🔐 Authentication & Authorization
+User authenticate(String usernameOrEmail, String password)
+
+Validates credentials and returns the user or throws an exception.
+
+boolean hasRole(User user, String roleName)
+
+Checks if a user has a specific role.
+
+boolean hasPermission(User user, String permission)
+
+Fine-grained access control if using permission-based auth.
+
+👤 User Account Management
+User registerUser(UserRegistrationDto dto)
+
+Handles new user registration with validation.
+
+User updateUser(Long userId, UserUpdateDto dto)
+
+Allows profile updates.
+
+void deleteUser(Long userId)
+
+Deletes or deactivates the user account.
+
+Optional<User> findByUsernameOrEmail(String identifier)
+
+Useful for login, verification, etc.
+
+User getCurrentUser()
+
+Fetches the currently authenticated user (e.g., from SecurityContext).
+
+🔁 Password & Security
+void changePassword(Long userId, String oldPassword, String newPassword)
+
+Self-service password change.
+
+void resetPassword(String email)
+
+Triggers a password reset flow (e.g., send email with token).
+
+boolean verifyResetToken(String token)
+
+Validates the reset token.
+
+void setNewPassword(String token, String newPassword)
+
+Sets a new password after reset.
+
+🔄 User Roles & Permissions
+void assignRoleToUser(Long userId, String roleName)
+
+void removeRoleFromUser(Long userId, String roleName)
+
+List<String> getUserRoles(Long userId)
+
+🔍 Search and Retrieval
+List<User> searchUsers(String keyword, Pageable pageable)
+
+User getUserById(Long userId)
+
+List<User> getAllUsers(Pageable pageable)
+
+📊 User Activity & Audit (Optional)
+void logUserActivity(Long userId, String activityType, String description)
+
+List<ActivityLog> getUserActivityLogs(Long userId, Pageable pageable)
+
+🧩 Optional (depending on your app's needs)
+void verifyEmail(String token)
+
+boolean isUsernameAvailable(String username)
+
+boolean isEmailAvailable(String email)
+
+void uploadProfilePicture(Long userId, MultipartFile file)
+
+byte[] getProfilePicture(Long userId)
+
+🧠 Design Tips
+Use DTOs for requests/responses.
+
+Return Optional<T> where nullability is expected.
+
+Consider async variants for long operations.
+
+Exception handling: Use custom exceptions like UserNotFoundException, InvalidCredentialsException, etc.
+
+Separate concerns: Use UserRepository for DB access and UserService for business logic.
+
