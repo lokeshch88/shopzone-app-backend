@@ -45,6 +45,15 @@ public class UserDto {
 
 		private String otp;
 		
+
+		public UserDto(String string) {
+			
+		}
+
+		public UserDto() {
+			// TODO Auto-generated constructor stub
+		}
+
 		public String getUsername() {
 			return username;
 		}

@@ -68,6 +68,8 @@ public class UserController {
 	
 	@Autowired
 	private UserRepo userRepo;
+
+	
 //	@PostMapping(path = "/login")
 //	public String login(@RequestBody UserDto user){
 //		try {
@@ -95,10 +97,25 @@ public class UserController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String token = jwtUtil.generateToken(userDto);
 
+            //fetch user details to send resp
+            Optional<User> userOpt = userRepo.findByUsername(userDto.getUsername());
+            if (!userOpt.isPresent()) {
+                log.warn("Authenticated but user not found in DB");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                     .body(new UserDto("User not found"));
+            }
+
+            User user = userOpt.get();
+            
            // UserDto userResponseDto = new UserDto();
            // userResponseDto.setUsername(userDto.getUsername());
             userDto.setToken(token);
             userDto.setPassword(null);
+            userDto.setUsername(user.getUsername());
+            userDto.setFirstName(user.getFirstName());
+            userDto.setLastName(user.getLastName());
+            userDto.setEmail(user.getEmail());
+            
             userDto.setMsg("Welcome "+userDto.getUsername());
             
             log.info("User logged in successfully with username: "+userDto.getUsername());
