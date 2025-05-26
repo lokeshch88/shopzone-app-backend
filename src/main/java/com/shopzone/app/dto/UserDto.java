@@ -45,7 +45,10 @@ public class UserDto {
 
 		private String otp;
 		
+		private Long userId;
 
+		private String userRole;
+		
 		public UserDto(String string) {
 			
 		}
@@ -180,6 +183,22 @@ public class UserDto {
 
 		public void setOtp(String otp) {
 			this.otp = otp;
+		}
+
+		public Long getUserId() {
+			return userId;
+		}
+
+		public void setUserId(Long userId) {
+			this.userId = userId;
+		}
+
+		public String getUserRole() {
+			return userRole;
+		}
+
+		public void setUserRole(String userRole) {
+			this.userRole = userRole;
 		}
 		
 		

@@ -115,6 +115,8 @@ public class UserController {
             userDto.setFirstName(user.getFirstName());
             userDto.setLastName(user.getLastName());
             userDto.setEmail(user.getEmail());
+            userDto.setUserId(user.getId());
+            userDto.setUserRole(user.getRole());
             
             userDto.setMsg("Welcome "+userDto.getUsername());
             

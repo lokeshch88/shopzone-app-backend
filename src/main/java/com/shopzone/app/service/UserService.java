@@ -48,7 +48,7 @@ private PasswordEncoder passwordEncoder;
 		user.setPassword(encodedPassword);
 		user.setAge(18);
 		user.setUsername(userDto.getUsername());
-		user.setRole("ADMIN");
+		user.setRole("USER");
 		
         userRepo.save(user);
         return "User saved successfully";

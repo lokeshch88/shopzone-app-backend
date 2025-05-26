@@ -45,15 +45,15 @@ public class ProductController {
     }
 
     // Get product by ID
-//    @GetMapping("/{productId}")
-//    public ResponseEntity<Product> getProductById(@PathVariable Long productId) {
-//        try {
-//            Product product = productService.getProductById(productId);
-//            return new ResponseEntity<>(product, HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-//        }
-//    }
+    @GetMapping("/{productId}")
+    public ResponseEntity<Product> getProductById(@PathVariable Long productId) {
+        try {
+            Product product = productService.getProductById(productId);
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
 //
 //    // Get product by SKU
 //    @GetMapping("/sku/{sku}")
@@ -86,6 +86,7 @@ public class ProductController {
 //
 //    // Update an existing product
 //    @PutMapping("/{productId}")
+//   @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")  
 //    public ResponseEntity<Product> updateProduct(@PathVariable Long productId, @RequestBody Product updatedProduct) {
 //        try {
 //            Product updated = productService.updateProduct(productId, updatedProduct);
@@ -97,6 +98,7 @@ public class ProductController {
 //
     // Delete product
     @DeleteMapping("/{productId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")  
     public ResponseEntity<HttpStatus> deleteProduct(@PathVariable Long productId) {
         try {
             productService.deleteProduct(productId);
