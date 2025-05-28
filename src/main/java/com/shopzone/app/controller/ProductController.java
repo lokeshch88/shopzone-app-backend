@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.shopzone.app.dto.ProductDto;
+import com.shopzone.app.entity.Category;
 import com.shopzone.app.entity.Product;
 import com.shopzone.app.service.ProductService;
 
@@ -107,4 +108,6 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    
+  
 }

@@ -79,14 +79,14 @@ public class Product {
 
     @DecimalMin(value = "0.01", message = "MRP must be greater than zero")
     @Column(name = "mrp", nullable = false)
-    private BigDecimal mrp;  // Maximum Retail Price (MRP)
+    private BigDecimal mrp;  // (MRP)
 
     @DecimalMin(value = "0.01", message = "Discount price must be greater than zero")
     @Column(name = "discount_price")
-    private BigDecimal discountPrice;  // Discounted price after discount
+    private BigDecimal discountPrice;  // discounted price after discount
 
-    // Additional method to calculate discount percentage
-    @Transient  // This field will not be persisted to the database
+    
+    @Transient  // for not be persisted to the database
     public BigDecimal getDiscountPercentage() {
         if (mrp != null && discountPrice != null && mrp.compareTo(BigDecimal.ZERO) > 0) {
             return (mrp.subtract(discountPrice)).divide(mrp, 2, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
