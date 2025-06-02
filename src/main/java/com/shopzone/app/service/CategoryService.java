@@ -15,16 +15,23 @@ public class CategoryService {
 
 	@Autowired
 	private CategoryRepo categoryRepo;
-	
+
 	public void createCategory(Category category) {
-		category.setCreatedAt(LocalDateTime.now());
-		categoryRepo.save(category);
-		
+		try {
+			category.setCreatedAt(LocalDateTime.now());
+			categoryRepo.save(category);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public List<Category> getAllCategories() {
-		
-		return categoryRepo.findAll();
+		try {
+			return categoryRepo.findAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

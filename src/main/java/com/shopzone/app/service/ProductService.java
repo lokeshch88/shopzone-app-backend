@@ -18,83 +18,84 @@ import java.util.Optional;
 @Service
 public class ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
-    
-    @Autowired
-    private ModelMapper modelMapper;
+	@Autowired
+	private ProductRepository productRepository;
 
-    @Autowired
+	@Autowired
+	private ModelMapper modelMapper;
+
+	@Autowired
 	private CategoryRepo categoryRepo;
 
-    // Create a new product
-    public ProductDto createProduct(ProductDto productDto) {
-        if (productDto.getDiscountPrice() != null && productDto.getMrp().compareTo(productDto.getDiscountPrice()) < 0) {
-            throw new IllegalArgumentException("Discount price cannot be greater than MRP.");
-        }
-        
-        Product product= modelMapper.map(productDto, Product.class);
-        //order.setUser(userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found")));
-        product.setCategoryId(categoryRepo.findById(productDto.getCategoryId()).orElseThrow(()-> new RuntimeException("Category not found")));
-        
-        product.setCreatedAt(LocalDateTime.now());
-        product.setIsActive(true);
-        Product savedProduct = productRepository.save(product);
+	
+	public ProductDto createProduct(ProductDto productDto) {
+		if (productDto.getDiscountPrice() != null && productDto.getMrp().compareTo(productDto.getDiscountPrice()) < 0) {
+			throw new IllegalArgumentException("Discount price cannot be greater than MRP.");
+		}
 
-        // Map back to DTO (optional)
-        return modelMapper.map(savedProduct, ProductDto.class);
-    }
+		Product product = modelMapper.map(productDto, Product.class);
+	
+		product.setCategoryId(categoryRepo.findById(productDto.getCategoryId())
+				.orElseThrow(() -> new RuntimeException("Category not found")));
 
-    // Get product by ID
-    public Product getProductById(Long productId) {
-        return productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
-    }
+		product.setCreatedAt(LocalDateTime.now());
+		product.setIsActive(true);
+		Product savedProduct = productRepository.save(product);
 
-    // Get product by SKU
-    public Product getProductBySku(String sku) {
-        return productRepository.findBySku(sku).orElseThrow(() -> new RuntimeException("Product with SKU " + sku + " not found"));
-    }
+		// Map back to DTO (optional)
+		return modelMapper.map(savedProduct, ProductDto.class);
+	}
 
-    // Get all products
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
 
-    // Get products by category
-    public List<Product> getProductsByCategory(String category) {
-        return productRepository.findByCategory(category);
-    }
+	public Product getProductById(Long productId) {
+		return productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+	}
 
-    // Get products by brand
-    public List<Product> getProductsByBrand(String brand) {
-        return productRepository.findByBrand(brand);
-    }
 
-    // Update an existing product
-    public Product updateProduct(Long productId, Product updatedProduct) {
-        Product existingProduct = getProductById(productId);
-        
-        existingProduct.setName(updatedProduct.getName());
-        existingProduct.setDescription(updatedProduct.getDescription());
-        existingProduct.setPrice(updatedProduct.getPrice());
-        existingProduct.setMrp(updatedProduct.getMrp());
-        existingProduct.setDiscountPrice(updatedProduct.getDiscountPrice());
-        existingProduct.setBrand(updatedProduct.getBrand());
-        existingProduct.setCategory(updatedProduct.getCategory());
-        existingProduct.setQuantityInStock(updatedProduct.getQuantityInStock());
-        existingProduct.setWeight(updatedProduct.getWeight());
-        existingProduct.setDimensions(updatedProduct.getDimensions());
-        existingProduct.setImageUrl(updatedProduct.getImageUrl());
-        existingProduct.setManufacturer(updatedProduct.getManufacturer());
-        existingProduct.setRating(updatedProduct.getRating());
-        existingProduct.setUpdatedAt(updatedProduct.getUpdatedAt());
-        
-        return productRepository.save(existingProduct);
-    }
+	public Product getProductBySku(String sku) {
+		return productRepository.findBySku(sku)
+				.orElseThrow(() -> new RuntimeException("Product with SKU " + sku + " not found"));
+	}
 
-    // Delete product
-    public void deleteProduct(Long productId) {
-        productRepository.deleteById(productId);
-    }
+
+	public List<Product> getAllProducts() {
+		return productRepository.findAll();
+	}
+
+
+	public List<Product> getProductsByCategory(String category) {
+		return productRepository.findByCategory(category);
+	}
+
+
+	public List<Product> getProductsByBrand(String brand) {
+		return productRepository.findByBrand(brand);
+	}
+
+
+	public Product updateProduct(Long productId, Product updatedProduct) {
+		Product existingProduct = getProductById(productId);
+
+		existingProduct.setName(updatedProduct.getName());
+		existingProduct.setDescription(updatedProduct.getDescription());
+		existingProduct.setPrice(updatedProduct.getPrice());
+		existingProduct.setMrp(updatedProduct.getMrp());
+		existingProduct.setDiscountPrice(updatedProduct.getDiscountPrice());
+		existingProduct.setBrand(updatedProduct.getBrand());
+		existingProduct.setCategory(updatedProduct.getCategory());
+		existingProduct.setQuantityInStock(updatedProduct.getQuantityInStock());
+		existingProduct.setWeight(updatedProduct.getWeight());
+		existingProduct.setDimensions(updatedProduct.getDimensions());
+		existingProduct.setImageUrl(updatedProduct.getImageUrl());
+		existingProduct.setManufacturer(updatedProduct.getManufacturer());
+		existingProduct.setRating(updatedProduct.getRating());
+		existingProduct.setUpdatedAt(updatedProduct.getUpdatedAt());
+
+		return productRepository.save(existingProduct);
+	}
+
+
+	public void deleteProduct(Long productId) {
+		productRepository.deleteById(productId);
+	}
 }
-

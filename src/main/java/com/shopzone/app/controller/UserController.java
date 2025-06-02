@@ -48,28 +48,27 @@ import com.shopzone.app.utils.JwtUtil;
 @RequestMapping("/user")
 @CrossOrigin("*")
 public class UserController {
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private JwtUtil jwtUtil;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
-	
+
 	@Autowired
 	private EmailService emailService;
-	
+
 	@Autowired
 	private UserRepo userRepo;
 
-	
 //	@PostMapping(path = "/login")
 //	public String login(@RequestBody UserDto user){
 //		try {
@@ -84,167 +83,161 @@ public class UserController {
 //			return e.getMessage();
 //		}
 //	}
-	
+
 	@PostMapping("/login")
-    public ResponseEntity<UserDto> login(@Valid @RequestBody UserDto userDto) {
-        try {
-            // Authenticate the user based on the username and password
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword())
-            );
+	public ResponseEntity<UserDto> login(@Valid @RequestBody UserDto userDto) {
+		try {
+			// Authenticate the user based on the username and password
+			Authentication authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword()));
 
-            // If authentication is successful, generate JWT token
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String token = jwtUtil.generateToken(userDto);
+			// If authentication is successful, generate JWT token
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			String token = jwtUtil.generateToken(userDto);
 
-            //fetch user details to send resp
-            Optional<User> userOpt = userRepo.findByUsername(userDto.getUsername());
-            if (!userOpt.isPresent()) {
-                log.warn("Authenticated but user not found in DB");
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                     .body(new UserDto("User not found"));
-            }
+			// fetch user details to send resp
+			Optional<User> userOpt = userRepo.findByUsername(userDto.getUsername());
+			if (!userOpt.isPresent()) {
+				log.warn("Authenticated but user not found in DB");
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new UserDto("User not found"));
+			}
 
-            User user = userOpt.get();
-            
-           // UserDto userResponseDto = new UserDto();
-           // userResponseDto.setUsername(userDto.getUsername());
-            userDto.setToken(token);
-            userDto.setPassword(null);
-            userDto.setUsername(user.getUsername());
-            userDto.setFirstName(user.getFirstName());
-            userDto.setLastName(user.getLastName());
-            userDto.setEmail(user.getEmail());
-            userDto.setUserId(user.getId());
-            userDto.setUserRole(user.getRole());
-            
-            userDto.setMsg("Welcome "+userDto.getUsername());
-            
-            log.info("User logged in successfully with username: "+userDto.getUsername());
-           
-            return ResponseEntity.ok(userDto);  // Return token in response
-            
-        } catch (BadCredentialsException e) { 
-           userDto.setMsg("Invalid username or password");
-           userDto.setPassword(null);
-           log.warn( "Invalid username or password");
-           
-           return ResponseEntity.badRequest().body(userDto);
-        } catch (Exception e) {
-			log.error("Error while login user "+userDto.getUsername());
-	           userDto.setMsg("Server error while  login");
-	           userDto.setPassword(null);
-	           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(userDto);
+			User user = userOpt.get();
+
+			// UserDto userResponseDto = new UserDto();
+			// userResponseDto.setUsername(userDto.getUsername());
+			userDto.setToken(token);
+			userDto.setPassword(null);
+			userDto.setUsername(user.getUsername());
+			userDto.setFirstName(user.getFirstName());
+			userDto.setLastName(user.getLastName());
+			userDto.setEmail(user.getEmail());
+			userDto.setUserId(user.getId());
+			userDto.setUserRole(user.getRole());
+
+			userDto.setMsg("Welcome " + userDto.getUsername());
+
+			log.info("User logged in successfully with username: " + userDto.getUsername());
+
+			return ResponseEntity.ok(userDto); // Return token in response
+
+		} catch (BadCredentialsException e) {
+			userDto.setMsg("Invalid username or password");
+			userDto.setPassword(null);
+			log.warn("Invalid username or password");
+
+			return ResponseEntity.badRequest().body(userDto);
+		} catch (Exception e) {
+			log.error("Error while login user " + userDto.getUsername());
+			userDto.setMsg("Server error while  login");
+			userDto.setPassword(null);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(userDto);
 		}
-        
-    }
-	
-	
-	
+
+	}
+
 	@PostMapping("/check-availability")
-	public ResponseEntity<UserDto> checkUsernameEmailAvailability(@RequestBody UserDto user){
+	public ResponseEntity<UserDto> checkUsernameEmailAvailability(@RequestBody UserDto user) {
 		try {
 			if (userRepo.existsByUsername(user.getUsername())) {
-	            user.setMsg("Username is already taken: " + user.getUsername());
-	            
-	            log.info("Response msg: {}", user.getMsg());
-	            return ResponseEntity.ok(user);
-	        }
+				user.setMsg("Username is already taken: " + user.getUsername());
+
+				log.info("Response msg: {}", user.getMsg());
+				return ResponseEntity.ok(user);
+			}
 			if (userRepo.existsByEmail(user.getEmail())) {
 				user.setMsg("Email already in use: " + user.getEmail());
-				
+
 				log.info("Response msg: {}", user.getMsg());
-			    return ResponseEntity.ok(user);
+				return ResponseEntity.ok(user);
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			
+
 		}
-		 log.info("Username and email are available.");
-		    return ResponseEntity.ok().build(); 
-		
+		log.info("Username and email are available.");
+		return ResponseEntity.ok().build();
+
 	}
-	
+
 	@PostMapping("/register")
-	//@PreAuthorize("hasRole('ADMIN')")
-	//@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+	// @PreAuthorize("hasRole('ADMIN')")
+	// @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
 	public ResponseEntity<UserDto> register(@Valid @RequestBody UserDto userDto) {
 		UserDto userResponseDto = new UserDto();
 		try {
-			log.info("In user Registration for username "+userDto.getUsername());
-			
-			//otp verification reqd before registartion
-			//check otp from email service
-			
-			String msg=userService.registerUser(userDto);
-			
-			  
-	          userResponseDto.setUsername(userDto.getUsername());
-	          userResponseDto.setMsg(msg);
+			log.info("In user Registration for username " + userDto.getUsername());
 
-			//if user reg. successful
-			if("User saved successfully".equals(msg)) {
-				log.info("Registration successful with username "+userDto.getUsername());
-				//send registration welcome email
+			// otp verification reqd before registartion
+			// check otp from email service
+
+			String msg = userService.registerUser(userDto);
+
+			userResponseDto.setUsername(userDto.getUsername());
+			userResponseDto.setMsg(msg);
+
+			// if user reg. successful
+			if ("User saved successfully".equals(msg)) {
+				log.info("Registration successful with username " + userDto.getUsername());
+				// send registration welcome email
 				emailService.sendWelcomeEmail(userDto);
 			}
-			
-			return ResponseEntity.ok(userResponseDto); 
-		
-		}catch (AccessDeniedException e) {
-			userResponseDto.setMsg( "Your not an authorized person");
-			log.warn("Your not an authorized person "+e);
+
+			return ResponseEntity.ok(userResponseDto);
+
+		} catch (AccessDeniedException e) {
+			userResponseDto.setMsg("Your not an authorized person");
+			log.warn("Your not an authorized person " + e);
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(userResponseDto);
+		} catch (Exception ex) {
+			userResponseDto.setMsg("error while register " + ex);
+			log.error("error while register " + ex);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(userResponseDto);
 		}
-		catch(Exception ex) {
-			userResponseDto.setMsg("error while register "+ex);
-			log.error("error while register "+ex);
-			 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(userResponseDto);
-		}
-		
+
 	}
-	
+
 	// Update User Info
-    @PutMapping("/{userId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")  
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long userId, @Valid @RequestBody UserDto userDto) {
-        try {
-            String msg = userService.updateUser(userId, userDto);
-            userDto.setMsg(msg);
-            return ResponseEntity.ok(userDto);
-        } catch (Exception e) {
-            userDto.setMsg("Error while updating user: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(userDto);
-        }
-    }
+	@PutMapping("/{userId}")
+	@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+	public ResponseEntity<UserDto> updateUser(@PathVariable Long userId, @Valid @RequestBody UserDto userDto) {
+		try {
+			String msg = userService.updateUser(userId, userDto);
+			userDto.setMsg(msg);
+			return ResponseEntity.ok(userDto);
+		} catch (Exception e) {
+			userDto.setMsg("Error while updating user: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(userDto);
+		}
+	}
 
-    // Delete User
-    @DeleteMapping("/{userId}")
-    @PreAuthorize("hasRole('ADMIN')")  // Example: only ADMIN can delete a user
-    public ResponseEntity<UserDto> deleteUser(@PathVariable Long userId) {
-    	UserDto userDto =new UserDto();
-        try {
-            String msg = userService.deleteUser(userId);
-            
-            userDto.setMsg(msg);
-            return ResponseEntity.ok(userDto);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(userDto);
-        }
-    }
+	// Delete User
+	@DeleteMapping("/{userId}")
+	@PreAuthorize("hasRole('ADMIN')") // Example: only ADMIN can delete a user
+	public ResponseEntity<UserDto> deleteUser(@PathVariable Long userId) {
+		UserDto userDto = new UserDto();
+		try {
+			String msg = userService.deleteUser(userId);
 
-    // Get User by ID
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long userId) {
-        try {
-            UserDto userDto = userService.getUserById(userId);
-            return ResponseEntity.ok(userDto);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
+			userDto.setMsg(msg);
+			return ResponseEntity.ok(userDto);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(userDto);
+		}
+	}
 
-    // Get User by Username (For login or display)
+	// Get User by ID
+	@GetMapping("/{userId}")
+	public ResponseEntity<UserDto> getUserById(@PathVariable Long userId) {
+		try {
+			UserDto userDto = userService.getUserById(userId);
+			return ResponseEntity.ok(userDto);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+	}
+
+	// Get User by Username (For login or display)
 //    @GetMapping("/username/{username}")
 //    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
 //        try {
@@ -255,11 +248,11 @@ public class UserController {
 //        }
 //    }
 
-    // Reset Password (Forgot Password)
-    @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@RequestBody UserResetPassword userDto) {
-        try {
-        	//verify otp from email sevice 
+	// Reset Password (Forgot Password)
+	@PostMapping("/reset-password")
+	public ResponseEntity<String> resetPassword(@RequestBody UserResetPassword userDto) {
+		try {
+			// verify otp from email sevice
 //        	ResponseEntity<EmailResponse> response = restTemplate.postForEntity(
 //        		    "http://localhost:8081/email/send",
 //        		    emailRequest,
@@ -271,28 +264,29 @@ public class UserController {
 //        		    System.out.println("Email status: " + body.getStatus());
 //        		    System.out.println("Message: " + body.getMessage());
 //        		}
-        	//if otp verified proceed 
-        	
-            String msg = userService.resetPassword(userDto.getUsernameOrEmail(),userDto.getNewPassword());
-            return ResponseEntity.ok(msg);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while resetting password: " + e.getMessage());
-        }
-    }
+			// if otp verified proceed
 
-    // Get All Users (Admin-only)
-    @GetMapping("/all")
-    @PreAuthorize("hasRole('ADMIN')")  // Only admins can get all users
-    public ResponseEntity<List<User>> getAllUsers() {
-        try {
-            List<User> users = userService.getAllUsers();
-            return ResponseEntity.ok(users);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+			String msg = userService.resetPassword(userDto.getUsernameOrEmail(), userDto.getNewPassword());
+			return ResponseEntity.ok(msg);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Error while resetting password: " + e.getMessage());
+		}
+	}
 
-    // Change User Role (Admin only)
+	// Get All Users (Admin-only)
+	@GetMapping("/all")
+	@PreAuthorize("hasRole('ADMIN')") // Only admins can get all users
+	public ResponseEntity<List<User>> getAllUsers() {
+		try {
+			List<User> users = userService.getAllUsers();
+			return ResponseEntity.ok(users);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+
+	// Change User Role (Admin only)
 //    @PutMapping("/change-role/{userId}")
 //    @PreAuthorize("hasRole('ADMIN')")
 //    public ResponseEntity<String> changeUserRole(@PathVariable Long userId, @RequestParam String role) {
@@ -303,43 +297,39 @@ public class UserController {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while changing user role: " + e.getMessage());
 //        }
 //    }
-	
-	
-   @PostMapping("/send-otp")
-	public ResponseEntity<?> sendOtp(@RequestBody UserDto user){
-	   log.info("Otp request for email "+user.getEmail());
-	   EmailRequest req= new EmailRequest();
-	   req.setEmail(user.getEmail());
-		String resp=emailService.sendOtp(req);
+
+	@PostMapping("/send-otp")
+	public ResponseEntity<?> sendOtp(@RequestBody UserDto user) {
+		log.info("Otp request for email " + user.getEmail());
+		EmailRequest req = new EmailRequest();
+		req.setEmail(user.getEmail());
+		String resp = emailService.sendOtp(req);
 		user.setMsg(resp);
 		return ResponseEntity.ok(user);
-		
+
 	}
-	
-   @PostMapping("/verify-otp")
-	public ResponseEntity<?> verifyOtp(@RequestBody UserDto user){
-	   try {
-	   log.info("Otp verify method for email "+user.getEmail());
-	   VerifyEmailOtpRequest req = new VerifyEmailOtpRequest();
-	   req.setEmail(user.getEmail());
-	   req.setOtp(user.getOtp());
-	   
-	   String msg=emailService.verifyOtp(req);
-		user.setMsg(msg);
-		return ResponseEntity.ok(user);
-		
-	   }catch (Exception e) {
-		   return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+
+	@PostMapping("/verify-otp")
+	public ResponseEntity<?> verifyOtp(@RequestBody UserDto user) {
+		try {
+			log.info("Otp verify method for email " + user.getEmail());
+			VerifyEmailOtpRequest req = new VerifyEmailOtpRequest();
+			req.setEmail(user.getEmail());
+			req.setOtp(user.getOtp());
+
+			String msg = emailService.verifyOtp(req);
+			user.setMsg(msg);
+			return ResponseEntity.ok(user);
+
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
-	}
-	
-	
-	
-	
+
 	@PreAuthorize("hasRole('MANAGER')")
 	@GetMapping("/hello")
-	public String hello(){
+	public String hello() {
 		return "helloo2";
-		
+
 	}
 }
