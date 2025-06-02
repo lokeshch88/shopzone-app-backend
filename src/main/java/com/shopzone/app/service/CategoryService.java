@@ -16,12 +16,13 @@ public class CategoryService {
 	@Autowired
 	private CategoryRepo categoryRepo;
 
-	public void createCategory(Category category) {
+	public Category createCategory(Category category) {
 		try {
 			category.setCreatedAt(LocalDateTime.now());
-			categoryRepo.save(category);
+			return categoryRepo.save(category);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 

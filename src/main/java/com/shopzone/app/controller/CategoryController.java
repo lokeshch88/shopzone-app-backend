@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shopzone.app.dto.CategoryDto;
 import com.shopzone.app.entity.Category;
 import com.shopzone.app.service.CategoryService;
 
@@ -33,8 +34,11 @@ public class CategoryController {
 	public ResponseEntity<Category> createCategory(@RequestBody Category category) {
 		log.info("In create category method for name " + category.getName());
 		try {
-			categoryService.createCategory(category);
-			return ResponseEntity.ok(category);
+			Category result = categoryService.createCategory(category);
+			if (result.getId() != null) {
+				return ResponseEntity.ok(category);
+			}
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
@@ -42,6 +46,7 @@ public class CategoryController {
 	}
 
 	@GetMapping("/get-all")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<Category>> getAllCategories() {
 		try {
 			List<Category> categories = categoryService.getAllCategories();

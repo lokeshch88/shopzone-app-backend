@@ -1,6 +1,7 @@
 package com.shopzone.app.exceptions;
 import java.util.stream.Collectors;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -38,6 +39,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
     
+    public ResponseEntity<String> handleDataIntegrityError(DataIntegrityViolationException e){
+		return new ResponseEntity<>("values must be unique", HttpStatus.CONFLICT);
+    	
+    }
+    
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseDto> handleGeneralException(Exception ex) {
     	errMsg="Something went wrong";
@@ -51,7 +57,7 @@ public class GlobalExceptionHandler {
     
     	errorResponse.setError(error);
     	errorResponse.setStatus(statusCode);
-        return ResponseEntity.ok(errorResponse);
+    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
     
     

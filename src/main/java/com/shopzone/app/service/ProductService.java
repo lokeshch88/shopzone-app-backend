@@ -42,7 +42,7 @@ public class ProductService {
 		product.setIsActive(true);
 		Product savedProduct = productRepository.save(product);
 
-		// Map back to DTO (optional)
+		// Map 
 		return modelMapper.map(savedProduct, ProductDto.class);
 	}
 

@@ -23,44 +23,42 @@ public class OrderService {
     @Autowired
     private UserRepo userRepository;
 
-    // Create Order
+
     public OrderResponse createOrder(Long userId, OrderRequest request) {
         Order order = new Order();
         order.setUser(userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found")));
         order.setProductIds(request.getProductIds()); 
-        order.setStatus(OrderStatus.PENDING); // default sta
+        order.setStatus(OrderStatus.PENDING); // default status
         order.setTotalAmount(request.getTotalAmount());
         
         Order savedOrder = orderRepository.save(order);
         return toResponse(savedOrder);
     }
 
-    // Update Order Status
+
     public OrderResponse updateOrderStatus(Long orderId, OrderStatus status) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
         order.setStatus(status);
         return toResponse(orderRepository.save(order));
     }
 
-    // Get Orders for a User
     public List<OrderResponse> getOrdersForUser(Long userId) {
-        List<Order> orders = orderRepository.findByUserId(userId);  // ✅ returns List<Order>
+        List<Order> orders = orderRepository.findByUserId(userId);  //
         
         return orders.stream()
-                     .map(this::toResponse)                         // ✅ works because toResponse(Order)
+                     .map(this::toResponse)                         
                      .collect(Collectors.toList());
     }
 
 
 
-    // Get All Orders
     public List<OrderResponse> getAllOrders() {
         return orderRepository.findAll().stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
     }
 
-    // Get Order by ID
+    //  by ID
     public OrderResponse getOrderById(Long id) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
         return toResponse(order);
@@ -79,7 +77,7 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    // Helper method to map Order to OrderResponse
+    // method to map Order to OrderResponse
     private OrderResponse toResponse(Order order) {
         return new OrderResponse(order.getId(), order.getUser().getId(), order.getProductIds(), order.getStatus(), order.getTotalAmount());
     }

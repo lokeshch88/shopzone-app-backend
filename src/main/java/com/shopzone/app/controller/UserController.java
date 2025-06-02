@@ -329,7 +329,7 @@ public class UserController {
 	@PreAuthorize("hasRole('MANAGER')")
 	@GetMapping("/hello")
 	public String hello() {
-		return "helloo2";
+		return "hello2";
 
 	}
 }
