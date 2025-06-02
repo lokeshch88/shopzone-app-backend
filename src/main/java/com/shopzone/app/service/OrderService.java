@@ -13,6 +13,7 @@ import com.shopzone.app.entity.Order;
 import com.shopzone.app.entity.OrderStatus;
 import com.shopzone.app.repo.OrderRepository;
 import com.shopzone.app.repo.UserRepo;
+import com.shopzone.utils.RandomCodeUtil;
 
 @Service
 public class OrderService {
@@ -25,15 +26,28 @@ public class OrderService {
 
 
     public OrderResponse createOrder(Long userId, OrderRequest request) {
+    	
+    	try {
         Order order = new Order();
+        System.out.println("in order create service with user id "+userId);
         order.setUser(userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found")));
         order.setProductIds(request.getProductIds()); 
         order.setStatus(OrderStatus.PENDING); // default status
         order.setTotalAmount(request.getTotalAmount());
         
+        //generate uuid orderid
+        String orderId=RandomCodeUtil.generateOrderId();
+        System.out.println("Order id generated "+ orderId);
+       order.setOrderId(orderId);
+        
         Order savedOrder = orderRepository.save(order);
         return toResponse(savedOrder);
-    }
+    	}catch (Exception e) {
+    		e.printStackTrace();
+			// TODO: handle exception
+    		return null;
+		}
+    	}
 
 
     public OrderResponse updateOrderStatus(Long orderId, OrderStatus status) {

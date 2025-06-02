@@ -29,10 +29,14 @@ public class Order {
 
     @Column(nullable = false)
     private Double totalAmount;
+    
+    @Column(name="order_id", nullable = false, unique = true)
+    private String orderId;
+    
 
     public Order() {}
 
-    // Getters and Setters
+   
 
     public Long getId() {
         return id;
@@ -41,8 +45,22 @@ public class Order {
     public void setId(Long id) {
         this.id = id;
     }
+    
+    
 
-    public User getUser() {
+    public String getOrderId() {
+		return orderId;
+	}
+
+
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+
+
+	public User getUser() {
         return user;
     }
 

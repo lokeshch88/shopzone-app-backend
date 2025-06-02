@@ -6,7 +6,7 @@ import java.util.List;
 
 public class OrderResponse {
 
-    private Long orderId;
+    private Long id;
     private Long userId;
     private List<Long> productIds;
     private OrderStatus status;
@@ -15,7 +15,7 @@ public class OrderResponse {
     public OrderResponse() {}
 
     public OrderResponse(Long orderId, Long userId, List<Long> productIds, OrderStatus status, Double totalAmount) {
-        this.orderId = orderId;
+        this.id = orderId;
         this.userId = userId;
         this.productIds = productIds;
         this.status = status;
@@ -23,11 +23,11 @@ public class OrderResponse {
     }
 
     public Long getOrderId() {
-        return orderId;
+        return id;
     }
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    public void setOrderId(Long id) {
+        this.id = id;
     }
 
     public Long getUserId() {
