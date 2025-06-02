@@ -3,6 +3,7 @@ package com.shopzone.app.dto;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 
 public class ProductDto {
@@ -61,9 +62,9 @@ public class ProductDto {
 
     // Optional calculated field (transient in response)
     private BigDecimal discountPercentage;
+    
+    private Long categoryId;
 
-    // Getters and setters
-    // You can generate them via IDE or Lombok if preferred
 
     public BigDecimal getDiscountPercentage() {
         if (mrp != null && discountPrice != null && mrp.compareTo(BigDecimal.ZERO) > 0) {
@@ -220,6 +221,14 @@ public class ProductDto {
 
 	public void setDiscountPercentage(BigDecimal discountPercentage) {
 		this.discountPercentage = discountPercentage;
+	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
    

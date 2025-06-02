@@ -85,8 +85,19 @@ public class Product {
     @Column(name = "discount_price")
     private BigDecimal discountPrice;  // discounted price after discount
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="category_id" )
+    private Category categoryId;
     
-    @Transient  // for not be persisted to the database
+    public Category getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Category categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	@Transient  // for not be persisted to the database
     public BigDecimal getDiscountPercentage() {
         if (mrp != null && discountPrice != null && mrp.compareTo(BigDecimal.ZERO) > 0) {
             return (mrp.subtract(discountPrice)).divide(mrp, 2, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));

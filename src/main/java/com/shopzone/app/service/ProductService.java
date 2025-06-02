@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.shopzone.app.dto.ProductDto;
 import com.shopzone.app.entity.Product;
+import com.shopzone.app.repo.CategoryRepo;
 import com.shopzone.app.repo.ProductRepository;
 
 import java.math.BigDecimal;
@@ -23,6 +24,9 @@ public class ProductService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+	private CategoryRepo categoryRepo;
+
     // Create a new product
     public ProductDto createProduct(ProductDto productDto) {
         if (productDto.getDiscountPrice() != null && productDto.getMrp().compareTo(productDto.getDiscountPrice()) < 0) {
@@ -30,10 +34,11 @@ public class ProductService {
         }
         
         Product product= modelMapper.map(productDto, Product.class);
+        //order.setUser(userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found")));
+        product.setCategoryId(categoryRepo.findById(productDto.getCategoryId()).orElseThrow(()-> new RuntimeException("Category not found")));
         
         product.setCreatedAt(LocalDateTime.now());
         product.setIsActive(true);
-        // Save entity
         Product savedProduct = productRepository.save(product);
 
         // Map back to DTO (optional)
