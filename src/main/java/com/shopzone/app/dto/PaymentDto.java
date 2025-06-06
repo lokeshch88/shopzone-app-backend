@@ -6,6 +6,8 @@ public class PaymentDto {
 	private long userId;
 	private String msg;
 	private double amount;
+	
+	private String txnId;
 
 	private String paymentMode;
 	private String paymentStatus;
@@ -45,6 +47,12 @@ public class PaymentDto {
 	}
 	public void setPaymentStatus(String paymentStatus) {
 		this.paymentStatus = paymentStatus;
+	}
+	public String getTxnId() {
+		return txnId;
+	}
+	public void setTxnId(String txnId) {
+		this.txnId = txnId;
 	}
 	
 	

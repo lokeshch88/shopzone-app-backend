@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shopzone.app.dto.PaymentDto;
+import com.shopzone.utils.RandomCodeUtil;
 
 @RestController
 @CrossOrigin("*")
@@ -19,14 +20,15 @@ public class PaymentController {
 		try {
 			paymentDto.setPaymentStatus("SUCCESS");
 //			paymentDto.setPaymentStatus("FAILED");
-			
+			String txnId= RandomCodeUtil.generateTransactionId();
+			paymentDto.setTxnId(txnId);
 			return new ResponseEntity<>(paymentDto, HttpStatus.OK);
 		}catch (Exception e) {
-			// TODO: handle exception
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 		
 		
-		return null;
+		
 		
 		
 	}
