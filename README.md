@@ -18,6 +18,7 @@ This is a backend project for a Shopping App built using Spring Boot. It include
 - Async booking confirmation via email
 - CRUD APIs for Order
 - Global error handling
+- Products CRUD operations
 
 ## 📁 Project Structure
 - `controller` – REST API endpoints
