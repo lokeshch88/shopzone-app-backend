@@ -50,6 +50,7 @@ public class CategoryController {
 	public ResponseEntity<List<Category>> getAllCategories() {
 		try {
 			List<Category> categories = categoryService.getAllCategories();
+			log.info("Categories fetched "+categories);
 			return ResponseEntity.ok(categories);
 		} catch (Exception e) {
 			return ResponseEntity.noContent().build();

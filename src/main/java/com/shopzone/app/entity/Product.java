@@ -2,6 +2,9 @@ package com.shopzone.app.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -39,10 +42,10 @@ public class Product {
     @Column(name = "brand")
     private String brand;
 
-    @NotNull
-    @Size(min = 2, max = 100, message = "Category name must be between 2 and 100 characters")
-    @Column(name = "category")
-    private String category;
+//    @NotNull
+//    @Size(min = 2, max = 100, message = "Category name must be between 2 and 100 characters")
+//    @Column(name = "category")
+//    private String category;
 
     @NotNull
     @Pattern(regexp = "^[A-Za-z0-9_-]+$", message = "SKU must contain only alphanumeric characters, dashes, and underscores")
@@ -87,6 +90,7 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id" )
+    @JsonIgnore
     private Category categoryId;
     
     public Category getCategoryId() {
@@ -154,13 +158,6 @@ public class Product {
         this.brand = brand;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
 
     public String getSku() {
         return sku;

@@ -14,7 +14,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findBySku(String sku);
 
     // Custom query to find products by category
-    List<Product> findByCategory(String category);
+//    List<Product> findByCategory(String category);
 
     // Custom query to find products by brand
     List<Product> findByBrand(String brand);

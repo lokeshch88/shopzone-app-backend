@@ -28,9 +28,9 @@ public class ProductDto {
     @Size(min = 2, max = 100)
     private String brand;
 
-    @NotNull
-    @Size(min = 2, max = 100)
-    private String category;
+//    @NotNull
+//    @Size(min = 2, max = 100)
+//    private String category;
 
     @NotNull
     @Pattern(regexp = "^[A-Za-z0-9_-]+$")
@@ -62,7 +62,8 @@ public class ProductDto {
 
     // Optional calculated field (transient in response)
     private BigDecimal discountPercentage;
-    
+  
+  @NotNull
     private Long categoryId;
 
 
@@ -123,13 +124,6 @@ public class ProductDto {
 		this.brand = brand;
 	}
 
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
 
 	public String getSku() {
 		return sku;

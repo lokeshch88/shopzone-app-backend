@@ -29,20 +29,14 @@ public class ProductController {
 	
     // Create a new product
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ADMIN')")      //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")   
     public ResponseEntity<ProductDto> createProduct(@RequestBody @Valid ProductDto product) {
-        try {
         	log.info("In create new product method");
         	//products exists verify pending
         	
         	ProductDto createdProduct = productService.createProduct(product);
         	log.info("Product created with id "+createdProduct.getId());
             return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
-        } catch (Exception e) {
-        	log.error("Error creating Product ",e.getMessage());
-        	e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
     }
 
     // Get product by ID

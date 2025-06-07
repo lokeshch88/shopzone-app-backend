@@ -29,23 +29,31 @@ public class ProductService {
 
 	
 	public ProductDto createProduct(ProductDto productDto) {
+		
+		try {
 		if (productDto.getDiscountPrice() != null && productDto.getMrp().compareTo(productDto.getDiscountPrice()) < 0) {
 			throw new IllegalArgumentException("Discount price cannot be greater than MRP.");
 		}
 
 		Product product = modelMapper.map(productDto, Product.class);
-	
+	System.out.println("product mapped");
 		product.setCategoryId(categoryRepo.findById(productDto.getCategoryId())
 				.orElseThrow(() -> new RuntimeException("Category not found")));
-
+		System.out.println("category id fetched ");
 		product.setCreatedAt(LocalDateTime.now());
 		product.setIsActive(true);
 		Product savedProduct = productRepository.save(product);
 
 		// Map 
 		return modelMapper.map(savedProduct, ProductDto.class);
+	}catch (Exception e) {
+		e.printStackTrace();
+		return null;
+	}
 	}
 
+	
+	
 
 	public Product getProductById(Long productId) {
 		return productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
@@ -63,9 +71,9 @@ public class ProductService {
 	}
 
 
-	public List<Product> getProductsByCategory(String category) {
-		return productRepository.findByCategory(category);
-	}
+//	public List<Product> getProductsByCategory(String category) {
+//		return productRepository.findByCategory(category);
+//	}
 
 
 	public List<Product> getProductsByBrand(String brand) {
@@ -82,7 +90,6 @@ public class ProductService {
 		existingProduct.setMrp(updatedProduct.getMrp());
 		existingProduct.setDiscountPrice(updatedProduct.getDiscountPrice());
 		existingProduct.setBrand(updatedProduct.getBrand());
-		existingProduct.setCategory(updatedProduct.getCategory());
 		existingProduct.setQuantityInStock(updatedProduct.getQuantityInStock());
 		existingProduct.setWeight(updatedProduct.getWeight());
 		existingProduct.setDimensions(updatedProduct.getDimensions());
