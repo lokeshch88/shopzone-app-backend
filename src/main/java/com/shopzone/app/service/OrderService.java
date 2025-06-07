@@ -93,6 +93,6 @@ public class OrderService {
 
     // method to map Order to OrderResponse
     private OrderResponse toResponse(Order order) {
-        return new OrderResponse(order.getId(), order.getUser().getId(), order.getProductIds(), order.getStatus(), order.getTotalAmount());
+        return new OrderResponse(order.getOrderId(), order.getUser().getId(), order.getProductIds(), order.getStatus(), order.getTotalAmount());
     }
 }

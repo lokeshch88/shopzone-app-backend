@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.shopzone.app.dto.OrderRequest;
 import com.shopzone.app.dto.OrderResponse;
+import com.shopzone.app.entity.Order;
 import com.shopzone.app.entity.OrderStatus;
+import com.shopzone.app.entity.User;
+import com.shopzone.app.repo.UserRepo;
 import com.shopzone.app.service.OrderService;
 
 
@@ -29,6 +34,8 @@ public class OrderController {
 
 	@Autowired
     private OrderService OrderService;
+	@Autowired
+	private UserRepo userRepo;
 
     @PostMapping("/user/{userId}")
     public ResponseEntity<OrderResponse> createOrder(
@@ -47,6 +54,17 @@ public class OrderController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<OrderResponse>> getUserOrders(@PathVariable Long userId) {
         return ResponseEntity.ok(OrderService.getOrdersForUser(userId));
+    }
+    
+    //to avoid anyone can fetch anyones order by passing id
+    @GetMapping("/my")
+    public ResponseEntity<List<OrderResponse>> getMyOrders(Authentication authentication){
+    	String username = authentication.getName(); // or extract email
+        User user = userRepo.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        List<OrderResponse> orders = OrderService.getOrdersForUser(user.getId());
+        return ResponseEntity.ok(orders);
     }
 
     @GetMapping
