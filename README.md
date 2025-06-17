@@ -7,6 +7,7 @@ This is a backend project for a Shopping App built using Spring Boot. It include
 - Spring Boot
 - Spring Security + JWT
 - Spring Data JPA
+- jBPM Workflow
 - MySQL
 - Maven
 - Async Processing (`@Async`)
