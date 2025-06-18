@@ -2,6 +2,8 @@ package com.shopzone.app.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -36,6 +38,9 @@ public class OrderController {
     private OrderService OrderService;
 	@Autowired
 	private UserRepo userRepo;
+	
+	private static final Logger log = LoggerFactory.getLogger(UserController.class);
+
 
     @PostMapping("/user/{userId}")
     public ResponseEntity<OrderResponse> createOrder(
@@ -46,8 +51,9 @@ public class OrderController {
 
     @PatchMapping("/{id}/status")
     public ResponseEntity<OrderResponse> updateStatus(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestParam OrderStatus status) {
+    	log.info("In update order status method for order id: "+id);
         return ResponseEntity.ok(OrderService.updateOrderStatus(id, status));
     }
 
@@ -60,6 +66,7 @@ public class OrderController {
     @GetMapping("/my")
     public ResponseEntity<List<OrderResponse>> getMyOrders(Authentication authentication){
     	String username = authentication.getName(); // or extract email
+    	log.info("In fetch my order method for user: "+username);
         User user = userRepo.findByUsername(username)
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
@@ -67,7 +74,7 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
 
-    @GetMapping
+    @GetMapping  
     public ResponseEntity<List<OrderResponse>> getAllOrders() {
         return ResponseEntity.ok(OrderService.getAllOrders());
     }

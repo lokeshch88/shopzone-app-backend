@@ -50,8 +50,8 @@ public class OrderService {
     	}
 
 
-    public OrderResponse updateOrderStatus(Long orderId, OrderStatus status) {
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+    public OrderResponse updateOrderStatus(String orderId, OrderStatus status) {
+        Order order = orderRepository.findByOrderId(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
         order.setStatus(status);
         return toResponse(orderRepository.save(order));
     }
@@ -94,5 +94,10 @@ public class OrderService {
     // method to map Order to OrderResponse
     private OrderResponse toResponse(Order order) {
         return new OrderResponse(order.getOrderId(), order.getUser().getId(), order.getProductIds(), order.getStatus(), order.getTotalAmount());
+    }
+    
+    private boolean proceedInWorkflow() {
+		return true;
+    	
     }
 }

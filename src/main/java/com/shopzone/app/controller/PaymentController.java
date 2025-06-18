@@ -18,6 +18,7 @@ public class PaymentController {
 	@PostMapping("/process")
 	public ResponseEntity<?> processPayment(PaymentDto paymentDto){
 		try {
+			System.out.println("In paytemenet controller method");
 			paymentDto.setPaymentStatus("SUCCESS");
 //			paymentDto.setPaymentStatus("FAILED");
 			String txnId= RandomCodeUtil.generateTransactionId();

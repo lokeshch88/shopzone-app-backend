@@ -2,7 +2,7 @@ package com.shopzone.app.dto;
 
 public class PaymentDto {
 
-	private long orderId;
+	private String orderId;
 	private long userId;
 	private String msg;
 	private double amount;
@@ -18,10 +18,10 @@ public class PaymentDto {
 	public void setPaymentMode(String paymentMode) {
 		this.paymentMode = paymentMode;
 	}
-	public long getorderId() {
+	public String getorderId() {
 		return orderId;
 	}
-	public void setorderId(long orderId) {
+	public void setorderId(String orderId) {
 		this.orderId = orderId;
 	}
 	public long getUserId() {
