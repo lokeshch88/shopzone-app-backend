@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.shopzone.app.dto.EmailRequest;
 import com.shopzone.app.dto.OrderRequest;
 import com.shopzone.app.dto.OrderResponse;
 import com.shopzone.app.entity.Order;
@@ -23,6 +24,9 @@ public class OrderService {
 
     @Autowired
     private UserRepo userRepository;
+    
+    @Autowired
+	private EmailService emailService;
 
 
     public OrderResponse createOrder(Long userId, OrderRequest request) {
@@ -53,6 +57,24 @@ public class OrderService {
     public OrderResponse updateOrderStatus(String orderId, OrderStatus status) {
         Order order = orderRepository.findByOrderId(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
         order.setStatus(status);
+        
+        EmailRequest req=new EmailRequest();
+        
+        String subj="Order confirmed "+orderId;
+        String message = "Hello Shruti,\n\n"
+	               + "Your order confirmed \n"
+	               + "Shop with us again.";
+        //fetch email id
+       // req.setEmail("shrutimajale1008@gmail.com");
+        
+        req.setSubject(subj);
+        
+        req.setMessage(message);
+        
+        String resp=emailService.sendOrderConfirmedEmail(req);
+        if("Notification email sent.".equals(resp)) {
+        	System.out.println("order placed email sent");
+        }
         return toResponse(orderRepository.save(order));
     }
 

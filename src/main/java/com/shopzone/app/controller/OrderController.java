@@ -74,8 +74,9 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
 
-    @GetMapping  
+    @GetMapping("/all")  
     public ResponseEntity<List<OrderResponse>> getAllOrders() {
+    	log.info("In fetch all order method for admin: ");
         return ResponseEntity.ok(OrderService.getAllOrders());
     }
 

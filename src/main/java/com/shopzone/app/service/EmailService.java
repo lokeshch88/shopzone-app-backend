@@ -122,4 +122,16 @@ public class EmailService {
 			}
 		return null;
 	}
+
+	public String sendOrderConfirmedEmail(EmailRequest req) {
+		String msg;
+		ResponseEntity<String> response = restTemplate.postForEntity(
+    		    "http://localhost:8081/email/notify",
+    		    req,
+    		    String.class
+    		);
+		msg=response.getBody();
+		log.info(msg);
+		return msg;
+	}
 }
