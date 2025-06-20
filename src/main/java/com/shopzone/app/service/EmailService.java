@@ -123,6 +123,7 @@ public class EmailService {
 		return null;
 	}
 
+	@Async
 	public String sendOrderConfirmedEmail(EmailRequest req) {
 		String msg;
 		ResponseEntity<String> response = restTemplate.postForEntity(

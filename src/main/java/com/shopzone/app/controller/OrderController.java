@@ -1,6 +1,7 @@
 package com.shopzone.app.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,13 +50,25 @@ public class OrderController {
         return ResponseEntity.ok(OrderService.createOrder(userId, request));
     }
 
-    @PatchMapping("/{id}/status")
-    public ResponseEntity<OrderResponse> updateStatus(
-            @PathVariable String id,
-            @RequestParam OrderStatus status) {
-    	log.info("In update order status method for order id: "+id);
-        return ResponseEntity.ok(OrderService.updateOrderStatus(id, status));
+//    @PatchMapping("/{id}/status")
+//    public ResponseEntity<OrderResponse> updateStatus(
+//            @PathVariable String id,
+//            @RequestParam OrderStatus status) {
+//    	log.info("In update order status method for order id: "+id);
+//        return ResponseEntity.ok(OrderService.updateOrderStatus(id, status));
+//    }
+    @PatchMapping
+    public ResponseEntity<OrderResponse> updateStatus(@RequestBody Map<String, Object> payload) {
+        String orderId = String.valueOf(payload.get("orderId").toString());
+        OrderStatus status = OrderStatus.valueOf(payload.get("status").toString());
+
+        Long userId = Long.valueOf(payload.get("userId").toString());
+
+        log.info("In update order status method for order id: " + orderId);
+
+        return ResponseEntity.ok(OrderService.updateOrderStatus(orderId, status, userId));
     }
+
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<OrderResponse>> getUserOrders(@PathVariable Long userId) {
