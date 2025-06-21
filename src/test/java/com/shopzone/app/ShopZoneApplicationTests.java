@@ -1,10 +1,10 @@
-package com.booking.app;
+package com.shopzone.app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BookingAppBackendApplicationTests {
+class ShopZoneApplicationTests {
 
 	@Test
 	void contextLoads() {

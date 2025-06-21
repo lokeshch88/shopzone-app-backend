@@ -62,7 +62,7 @@ public class OrderService {
         
         EmailRequest req=new EmailRequest();
         
-        String subj="Order confirmed "+orderId;
+        String subj="Order "+status+ orderId;
       
         //fetch email id
        
