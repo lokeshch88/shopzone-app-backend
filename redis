@@ -1,0 +1,26 @@
+##Install Redis on Ubuntu (WSL or Desktop):
+sudo apt update
+sudo apt install redis -y
+
+##verify installation
+redis-server --version
+redis-cli ping
+
+##for docker windows
+docker run --name redis -p 6379:6379 -d redis
+
+#verify
+docker ps
+
+
+##check key status
+redis-cli EXISTS <key>    # should return 1
+redis-cli GET <key>        # should return value
+redis-cli TTL <key>        # should return something close to 10 (decreasing every second)
+
+##check status
+sudo systemctl status redis
+
+sudo systemctl stop redis
+
+sudo systemctl start redis

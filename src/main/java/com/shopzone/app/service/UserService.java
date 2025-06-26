@@ -112,10 +112,10 @@ public class UserService implements UserDetailsService {
 	}
 
 	public String resetPassword(String usernameOrEmail, String newPassword) {
-		Optional<User> userOptional = userRepo.findByUsername(usernameOrEmail);
+		Optional<User> userOptional = userRepo.findByUsername(usernameOrEmail);//check with username
 
 		if (!userOptional.isPresent()) {
-			userOptional = userRepo.findByEmail(usernameOrEmail);
+			userOptional = userRepo.findByEmail(usernameOrEmail); //check with email
 		}
 
 		if (!userOptional.isPresent()) {

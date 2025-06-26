@@ -25,7 +25,7 @@ import com.shopzone.app.filter.JwtFilter;
 @Configuration
 @EnableWebSecurity
 //@EnableMethodSecurity //for newwer boot version
-@EnableGlobalMethodSecurity(prePostEnabled = true) //in older versions
+@EnableGlobalMethodSecurity(prePostEnabled = true) // older versions
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
 	private JwtFilter jwtFilter;
@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .csrf().disable()   //csrf disable for ddl reqs
         .authorizeRequests()
         .antMatchers("/user/login", "/user/reset-password", "/user/send-otp", "/user/verify-otp",
-     		   "/user/check-availability", "/user/register", "/products/all", "/products//{productId}"
+     		   "/user/check-availability", "/user/register", "/products/all", "/products/{productId}", "/user/test-redis"
      		   ).permitAll() // allow login endpoint without auth
         .anyRequest().authenticated() // protect all other endpoints
 //        .and()
