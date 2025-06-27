@@ -5,11 +5,12 @@ This is a backend project for a Shopping App built using Spring Boot. It include
 ## 🚀 Tech Stack
 - Java 8
 - Spring Boot
-- Spring Security + JWT
+- Spring Security with JWT
 - Spring Data JPA
 - jBPM Workflow
 - MySQL
 - Maven
+- Redis for in-memory data storage and caching
 - Async Processing (`@Async`)
 - Global Exception Handling
 
