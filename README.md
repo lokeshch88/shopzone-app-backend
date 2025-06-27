@@ -3,14 +3,16 @@
 This is a backend project for a Shopping App built using Spring Boot. It includes secure authentication using JWT, role-based access control, async email notifications, and REST APIs for managing orders.
 
 ## 🚀 Tech Stack
-- Java 8
-- Spring Boot
-- Spring Security + JWT
-- Spring Data JPA
-- MySQL
-- Maven
-- Async Processing (`@Async`)
-- Global Exception Handling
+- **Java 8** – Core programming language  
+- **Spring Boot** – Backend framework  
+- **Spring Security with JWT** – Authentication & authorization  
+- **Spring Data JPA** – ORM & database access  
+- **jBPM Workflow Engine** – Workflow automation  
+- **MySQL** – Relational database  
+- **Maven** – Dependency management  
+- **Redis** – In-memory caching for fast data access  
+- **Spring Async** – For running background tasks and improving performance during long-running operations  
+- **Global Exception Handling** – Clean error responses
 
 ## ✅ Features
 - User registration & login with JWT authentication
