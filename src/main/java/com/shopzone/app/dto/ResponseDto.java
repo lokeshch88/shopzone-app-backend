@@ -1,19 +1,21 @@
 package com.shopzone.app.dto;
 
-public class ResponseDto {
+import java.util.List;
+
+public class ResponseDto<T> {
 
     private String message;
     private String error;
-    private int status;
+    private int responseCd;
     private String token;
     private String username;
     
-    private String data;
+    private List<T> result;
 
     public ResponseDto(String message, String error, int status) {
         this.message = message;
         this.error = error;
-        this.status = status;
+        this.responseCd = status;
     }
 
 	public ResponseDto() {
@@ -37,21 +39,20 @@ public class ResponseDto {
 	}
 
 	public int getStatus() {
-		return status;
+		return responseCd;
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
+	public void setStatus(int responseCd) {
+		this.responseCd = responseCd;
 	}
 
-	public String getData() {
-		return data;
+	public List<T> getResult() {
+	    return result;
 	}
 
-	public void setData(String data) {
-		this.data = data;
+	public void setResult(List<T> result) {
+	    this.result = result;
 	}
-
 	public String getToken() {
 		return token;
 	}

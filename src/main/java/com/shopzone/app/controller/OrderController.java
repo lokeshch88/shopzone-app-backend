@@ -37,7 +37,7 @@ public class OrderController {
 
 	@Autowired
     private OrderService OrderService;
-	@Autowired
+	@Autowired 
 	private UserRepo userRepo;
 	
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);

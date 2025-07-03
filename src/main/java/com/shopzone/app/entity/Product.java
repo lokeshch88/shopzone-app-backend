@@ -18,12 +18,12 @@ public class Product {
     @Column(name = "product_id")
     private Long id;
 
-    @NotNull
+
     @Size(min = 3, max = 255, message = "Product name must be between 3 and 255 characters")
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @NotNull
+
     @Lob
     @Column(name = "description", nullable = false)
     private String description;

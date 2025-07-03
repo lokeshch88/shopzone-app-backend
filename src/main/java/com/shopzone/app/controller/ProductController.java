@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.shopzone.app.dto.ProductDto;
+import com.shopzone.app.dto.ResponseDto;
 import com.shopzone.app.entity.Category;
 import com.shopzone.app.entity.Product;
 import com.shopzone.app.service.ProductService;
@@ -63,8 +64,18 @@ public class ProductController {
 //
     // Get all products
     @GetMapping("all")
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public ResponseEntity<ResponseDto<Product>> getAllProducts() {
+    	List<Product> list=productService.getAllProducts();
+    	
+    	ResponseDto<Product> resp= new ResponseDto<Product>();
+    	if(list.isEmpty()) {
+    		resp.setStatus(1);
+    		resp.setMessage("No Product founds");
+    	}
+    	resp.setStatus(0);
+		resp.setResult(list);
+		resp.setMessage("Products fetched successfully");
+        return ResponseEntity.ok(resp);
     }
 //
 //    // Get products by category
