@@ -15,12 +15,12 @@ This is a backend project for a Shopping App built using Spring Boot. It include
 - **Global Exception Handling** – Clean error responses
 
 ## ✅ Features
-- User registration & login with JWT authentication
-- Role-based access (Admin/User)
-- Async booking confirmation via email
-- CRUD APIs for Order
+- User registration & login via email OTP service only authenticated users can do JWT authentication
+- Role-based access (Admin/Manager/User)
+- Admin/Manager can manages: Products, Orders, Users, Coupons, Gift cards etc.
+- Async order status via email services
+- CRUD APIs for all entities
 - Global error handling
-- Products CRUD operations
 
 ## 📁 Project Structure
 - `controller` – REST API endpoints
@@ -33,9 +33,10 @@ This is a backend project for a Shopping App built using Spring Boot. It include
 ## 🔐 Authentication
 - JWT-based login
 - Access token returned on login
-- Role-based protected routes (e.g., only admin can delete orders)
+- Role-based protected routes (e.g., only admin can delete/update products, orders etc.)
 
 ## 🛠️ Setup Instructions
 
 1. Clone the repo:
    git clone https://github.com/lokeshch88/shopzone-app-backend.git
+2. 
