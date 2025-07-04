@@ -3,6 +3,7 @@ package com.shopzone.app.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,11 @@ public class CouponService {
 		entity.setCreatedBy("admin");
 		System.out.println("Coupon object to be save: "+entity.toString());
 		couponRepo.save(entity);
+	}
+
+	public List<Coupon> getAllCoupons() {
+		
+		return couponRepo.findAll();
 	}
 
 }
