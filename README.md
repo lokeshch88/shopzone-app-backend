@@ -17,7 +17,8 @@ This is a backend project for a Shopping App built using Spring Boot. It include
 ## ✅ Features
 - User registration & login via email OTP service only authenticated users can do JWT authentication
 - Role-based access (Admin/Manager/User)
-- Admin/Manager can manages: Products, Orders, Users, Coupons, Gift cards etc.
+- User can manages self: Orders, Address, Profile details, Coupons etc. 
+- Admin/Manager can manages: Products, Orders, Users, Coupons, Gift cards, Delivery schedules etc.
 - Async order status via email services
 - CRUD APIs for all entities
 - Global error handling
