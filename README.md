@@ -39,3 +39,4 @@ This is a backend project for a Shopping App built using Spring Boot. It include
 
 1. Clone the repo:
    git clone https://github.com/lokeshch88/shopzone-app-backend.git
+2.
