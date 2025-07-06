@@ -1,6 +1,5 @@
 package com.shopzone.app.controller;
 
-import java.net.ResponseCache;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -28,6 +27,8 @@ public class CouponController {
 	CouponService couponService;
 
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
+	
+	
 	@PostMapping("/create")
 	public ResponseEntity<ResponseDto<Coupon>> createCoupon(@RequestBody CouponDto coupon) {
 		log.info("coupon reqs data received: "+coupon);
