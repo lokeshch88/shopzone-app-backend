@@ -32,6 +32,7 @@ public class AddressService {
         Address address = new Address();
         address.setAddressLine(dto.getAddressLine());
         address.setCity(dto.getCity());
+        address.setDistrict(dto.getDistrict());
         address.setState(dto.getState());
         address.setCountry(dto.getCountry());
         address.setPincode(dto.getPincode());
@@ -48,9 +49,10 @@ public class AddressService {
 
     private AddressDto mapToDto(Address a) {
         AddressDto dto = new AddressDto();
-        dto.setId(a.getId());
+		dto.setId(a.getId());
         dto.setAddressLine(a.getAddressLine());
         dto.setCity(a.getCity());
+        dto.setDistrict(a.getDistrict());
         dto.setState(a.getState());
         dto.setCountry(a.getCountry());
         dto.setPincode(a.getPincode());

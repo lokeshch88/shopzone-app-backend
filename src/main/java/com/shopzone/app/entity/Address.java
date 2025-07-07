@@ -23,6 +23,7 @@ public class Address {
 
     private String addressLine;
     private String city;
+    private String district;
     private String state;
     private String country;
     private String pincode;
@@ -82,5 +83,15 @@ public class Address {
     public User getUser() { return user; }
 
     public void setUser(User user) { this.user = user; }
+
+
+	public String getDistrict() {
+		return district;
+	}
+
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
 }
 

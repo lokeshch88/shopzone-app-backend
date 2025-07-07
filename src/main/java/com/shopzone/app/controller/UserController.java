@@ -3,6 +3,7 @@ package com.shopzone.app.controller;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import com.shopzone.app.dto.AddressDto;
 import com.shopzone.app.dto.EmailRequest;
 import com.shopzone.app.dto.EmailResponse;
 import com.shopzone.app.dto.ResponseDto;
@@ -119,6 +121,25 @@ public class UserController {
 			userDto.setEmail(user.getEmail());
 			userDto.setUserId(user.getId());
 			userDto.setUserRole(user.getRole());
+
+	        List<AddressDto> addressDTOs = user.getAddresses()
+	            .stream()
+	            .map(addr -> {
+	            	AddressDto a = new AddressDto();
+	                a.setId(addr.getId());
+	                a.setAddressLine(addr.getAddressLine());
+	                a.setCity(addr.getCity());
+	                a.setDistrict(addr.getDistrict());
+	                a.setState(addr.getState());
+	                a.setCountry(addr.getCountry());
+	                a.setPincode(addr.getPincode());
+	                a.setLatitude(addr.getLatitude());
+	                a.setLongitude(addr.getLongitude());
+	                return a;
+	            })
+	            .collect(Collectors.toList());
+
+	        userDto.setAddresses(addressDTOs);
 
 			userDto.setMsg("Welcome " + userDto.getUsername());
 

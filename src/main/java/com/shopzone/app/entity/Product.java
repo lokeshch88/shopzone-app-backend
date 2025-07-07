@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -92,6 +93,10 @@ public class Product {
     @JoinColumn(name="category_id" )
     @JsonIgnore
     private Category categoryId;
+    
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductVariant> variants;
+
     
     public Category getCategoryId() {
 		return categoryId;

@@ -1,13 +1,17 @@
 package com.shopzone.app.service;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.shopzone.app.controller.CategoryController;
 import com.shopzone.app.dto.EmailRequest;
 import com.shopzone.app.dto.OrderRequest;
 import com.shopzone.app.dto.OrderResponse;
@@ -30,20 +34,21 @@ public class OrderService {
     @Autowired
 	private EmailService emailService;
 
-
+    private static final Logger log = LoggerFactory.getLogger(OrderService.class);
+    
     public OrderResponse createOrder(Long userId, OrderRequest request) {
     	
     	try {
         Order order = new Order();
-        System.out.println("in order create service with user id "+userId);
+        log.info("In order create service with user id "+userId);
         order.setUser(userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found")));
         order.setProductIds(request.getProductIds()); 
         order.setStatus(OrderStatus.PENDING); // default status
         order.setTotalAmount(request.getTotalAmount());
-        
+        order.setCreatedAt(LocalDateTime.now());
         //generate uuid orderid
         String orderId=RandomCodeUtil.generateOrderId();
-        System.out.println("Order id generated "+ orderId);
+        log.info("Order id generated "+ orderId);
        order.setOrderId(orderId);
         
         Order savedOrder = orderRepository.save(order);
@@ -59,7 +64,7 @@ public class OrderService {
     public OrderResponse updateOrderStatus(String orderId, OrderStatus status, Long userId) {
         Order order = orderRepository.findByOrderId(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
         order.setStatus(status);
-        
+        order.setUpdatedAt(LocalDateTime.now());
         EmailRequest req=new EmailRequest();
         
         String subj="Order "+status+ orderId;

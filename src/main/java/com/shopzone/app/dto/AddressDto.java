@@ -5,6 +5,7 @@ public class AddressDto {
     private Long id;
     private String addressLine;
     private String city;
+    private String district;
     private String state;
     private String country;
     private String pincode;
@@ -64,6 +65,12 @@ public class AddressDto {
 	}
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+	public String getDistrict() {
+		return district;
+	}
+	public void setDistrict(String district) {
+		this.district = district;
 	}
 
     // Getters & Setters

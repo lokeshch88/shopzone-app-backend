@@ -1,5 +1,6 @@
 package com.shopzone.app.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.*;
@@ -33,12 +34,41 @@ public class Order {
     @Column(name="order_id", nullable = false, unique = true)
     private String orderId;
     
+    @Column(name = "created_at", updatable = false)
+   	private LocalDateTime createdAt;
+   	 
+   	 @Column(name = "updated_at")
+   	private LocalDateTime updatedAt;
 
     public Order() {}
 
    
 
-    public Long getId() {
+    public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+
+
+	public Long getId() {
         return id;
     }
 

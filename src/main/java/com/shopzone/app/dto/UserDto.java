@@ -1,6 +1,7 @@
 package com.shopzone.app.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.*;
@@ -48,6 +49,7 @@ public class UserDto {
 		private Long userId;
 
 		private String userRole;
+		private List<AddressDto> addresses;
 		
 		public UserDto(String string) {
 			
@@ -199,6 +201,14 @@ public class UserDto {
 
 		public void setUserRole(String userRole) {
 			this.userRole = userRole;
+		}
+
+		public List<AddressDto> getAddresses() {
+			return addresses;
+		}
+
+		public void setAddresses(List<AddressDto> addresses) {
+			this.addresses = addresses;
 		}
 		
 		

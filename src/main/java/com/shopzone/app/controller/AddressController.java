@@ -18,7 +18,7 @@ import com.shopzone.app.dto.AddressDto;
 import com.shopzone.app.service.AddressService;
 
 @RestController
-@RequestMapping("/api/addresses")
+@RequestMapping("/address")
 @CrossOrigin(origins = "*")
 public class AddressController {
 

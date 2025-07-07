@@ -75,7 +75,7 @@ public class OrderController {
         return ResponseEntity.ok(OrderService.getOrdersForUser(userId));
     }
     
-    //to avoid anyone can fetch anyones order by passing id
+    //to avoid anyone can fetch anyones order by passing id random id
     @GetMapping("/my")
     public ResponseEntity<List<OrderResponse>> getMyOrders(Authentication authentication){
     	String username = authentication.getName(); // or extract email

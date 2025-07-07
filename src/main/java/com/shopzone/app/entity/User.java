@@ -70,6 +70,14 @@ public class User implements UserDetails {
     private List<Address> addresses = new ArrayList<>();
 
 
+	public List<Address> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
+	}
+
 	public Long getId() {
 		return id;
 	}
