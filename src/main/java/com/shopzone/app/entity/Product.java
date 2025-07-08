@@ -94,11 +94,21 @@ public class Product {
     @JsonIgnore
     private Category categoryId;
     
+//    @ElementCollection
+//    @CollectionTable(name = "product_variant", joinColumns = @JoinColumn(name = "user_id"))
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductVariant> variants;
 
     
-    public Category getCategoryId() {
+    public List<ProductVariant> getVariants() {
+		return variants;
+	}
+
+	public void setVariants(List<ProductVariant> variants) {
+		this.variants = variants;
+	}
+
+	public Category getCategoryId() {
 		return categoryId;
 	}
 

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -78,13 +79,20 @@ public class OrderController {
     //to avoid anyone can fetch anyones order by passing id random id
     @GetMapping("/my")
     public ResponseEntity<List<OrderResponse>> getMyOrders(Authentication authentication){
+    try {
     	String username = authentication.getName(); // or extract email
+    	log.info("Fetch my order for "+username);
     	log.info("In fetch my order method for user: "+username);
         User user = userRepo.findByUsername(username)
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         List<OrderResponse> orders = OrderService.getOrdersForUser(user.getId());
         return ResponseEntity.ok(orders);
+    }catch (Exception e) {
+    	log.error(e.getMessage());
+    	 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build() ;
+		
+	}
     }
 
     @GetMapping("/all")  
@@ -94,7 +102,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderResponse> getOrder(@PathVariable Long id) {
+    public ResponseEntity<OrderResponse> getOrder(@PathVariable String id) {
         return ResponseEntity.ok(OrderService.getOrderById(id));
     }
 

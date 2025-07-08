@@ -42,9 +42,9 @@ public class ProductController {
 
     // Get product by ID
     @GetMapping("/{productId}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long productId) {
+    public ResponseEntity<ProductDto> getProductById(@PathVariable Long productId) {
         try {
-            Product product = productService.getProductById(productId);
+        	ProductDto product = productService.getProductDtoById(productId);
             return new ResponseEntity<>(product, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -64,10 +64,10 @@ public class ProductController {
 //
     // Get all products
     @GetMapping("all")
-    public ResponseEntity<ResponseDto<Product>> getAllProducts() {
-    	List<Product> list=productService.getAllProducts();
+    public ResponseEntity<ResponseDto<ProductDto>> getAllProducts() {
+    	List<ProductDto> list=productService.getAllProducts();
     	
-    	ResponseDto<Product> resp= new ResponseDto<Product>();
+    	ResponseDto<ProductDto> resp= new ResponseDto<ProductDto>();
     	if(list.isEmpty()) {
     		resp.setStatus(1);
     		resp.setMessage("No Product founds");
@@ -90,17 +90,21 @@ public class ProductController {
 //        return productService.getProductsByBrand(brand);
 //    }
 //
-//    // Update an existing product
-//    @PutMapping("/{productId}")
-//   @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")  
-//    public ResponseEntity<Product> updateProduct(@PathVariable Long productId, @RequestBody Product updatedProduct) {
-//        try {
-//            Product updated = productService.updateProduct(productId, updatedProduct);
-//            return new ResponseEntity<>(updated, HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-//        }
-//    }
+    // Update an existing product
+    @PutMapping("/{productId}")
+//   @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    @PreAuthorize("hasRole('ADMIN')")  
+    public ResponseEntity<Product> updateProduct(@PathVariable Long productId, @RequestBody Product updatedProduct) {
+    	log.info("In product update ");
+        try {
+            Product updated = productService.updateProduct(productId, updatedProduct);
+            log.info("Product updated successfully ");
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } catch (Exception e) {
+        	log.error(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
 //
     // Delete product
     @DeleteMapping("/{productId}")

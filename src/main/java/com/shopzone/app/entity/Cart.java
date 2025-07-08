@@ -22,7 +22,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Link cart to a user
+    // Link cart to user
     @Column(name = "user_id", nullable = false)
     private Long userId;
 

@@ -2,22 +2,24 @@ package com.shopzone.app.dto;
 
 import com.shopzone.app.entity.OrderStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class OrderResponse {
 
     private String id;
     private Long userId;
-    private List<Long> productIds;
     private OrderStatus status;
+    private List<OrderItemDto> items;
     private Double totalAmount;
 
+	private LocalDateTime createdAt;
+  	 
     public OrderResponse() {}
 
-    public OrderResponse(String orderId, Long userId, List<Long> productIds, OrderStatus status, Double totalAmount) {
+    public OrderResponse(String orderId, Long userId, OrderStatus status, Double totalAmount) {
         this.id = orderId;
         this.userId = userId;
-        this.productIds = productIds;
         this.status = status;
         this.totalAmount = totalAmount;
     }
@@ -38,13 +40,7 @@ public class OrderResponse {
         this.userId = userId;
     }
 
-    public List<Long> getProductIds() {
-        return productIds;
-    }
-
-    public void setProductIds(List<Long> productIds) {
-        this.productIds = productIds;
-    }
+ 
 
     public OrderStatus getStatus() {
         return status;
@@ -61,4 +57,20 @@ public class OrderResponse {
     public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount;
     }
+
+	public List<OrderItemDto> getItems() {
+		return items;
+	}
+
+	public void setItems(List<OrderItemDto> items) {
+		this.items = items;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
 }

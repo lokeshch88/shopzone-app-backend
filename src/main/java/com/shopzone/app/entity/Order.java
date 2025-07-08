@@ -19,11 +19,11 @@ public class Order {
     private User user;
 
     // Store list of product IDs (simple numbers)
-    @ElementCollection
-    @CollectionTable(name = "order_product_ids", joinColumns = @JoinColumn(name = "order_id"))
-    @Column(name = "product_id")
-    private List<Long> productIds;
-
+//    @ElementCollection
+//    @CollectionTable(name = "order_product_ids", joinColumns = @JoinColumn(name = "order_id"))
+//    @Column(name = "product_id")
+//    private List<Long> productIds;
+                                                                                                                                                                                                                                  
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;
@@ -39,6 +39,17 @@ public class Order {
    	 
    	 @Column(name = "updated_at")
    	private LocalDateTime updatedAt;
+
+   	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+   	private List<OrderItem> items;
+
+   	public List<OrderItem> getItems() {
+   	    return items;
+   	}
+
+   	public void setItems(List<OrderItem> items) {
+   	    this.items = items;
+   	}
 
     public Order() {}
 
@@ -98,13 +109,6 @@ public class Order {
         this.user = user;
     }
 
-    public List<Long> getProductIds() {
-        return productIds;
-    }
-
-    public void setProductIds(List<Long> productIds) {
-        this.productIds = productIds;
-    }
 
     public OrderStatus getStatus() {
         return status;

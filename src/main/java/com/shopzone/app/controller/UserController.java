@@ -303,9 +303,9 @@ public class UserController {
 	// Get All Users (Admin-only)
 	@GetMapping("/all")
 	@PreAuthorize("hasRole('ADMIN')") // Only admins can get all users
-	public ResponseEntity<List<User>> getAllUsers() {
+	public ResponseEntity<List<UserDto>> getAllUsers() {
 		try {
-			List<User> users = userService.getAllUsers();
+			List<UserDto> users = userService.getAllUsers();
 			return ResponseEntity.ok(users);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

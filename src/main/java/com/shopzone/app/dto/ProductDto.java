@@ -5,6 +5,7 @@ import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 
 public class ProductDto {
 
@@ -66,6 +67,7 @@ public class ProductDto {
   @NotNull
     private Long categoryId;
 
+  private List<VariantDTO> variants;
 
     public BigDecimal getDiscountPercentage() {
         if (mrp != null && discountPrice != null && mrp.compareTo(BigDecimal.ZERO) > 0) {
@@ -223,6 +225,14 @@ public class ProductDto {
 
 	public void setCategoryId(Long categoryId) {
 		this.categoryId = categoryId;
+	}
+
+	public List<VariantDTO> getVariants() {
+		return variants;
+	}
+
+	public void setVariants(List<VariantDTO> variants) {
+		this.variants = variants;
 	}
 
    

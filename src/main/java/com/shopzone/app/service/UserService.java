@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,6 +28,9 @@ public class UserService implements UserDetailsService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private ModelMapper modelMapper;
 
 	public String registerUser(UserDto userDto) {
 		try {
@@ -133,13 +137,13 @@ public class UserService implements UserDetailsService {
 		return "Password reset successfully.";
 	}
 
-	public List<User> getAllUsers() {
+	public List<UserDto> getAllUsers() {
 		List<User> users = userRepo.findAll();
 
-//		 return users.stream()
-//	                .map(user -> modelMapper.map(user, UserDto.class))
-//	                .collect(Collectors.toList());
-		return users;
+		 return users.stream()
+	                .map(user -> modelMapper.map(user, UserDto.class))
+	                .collect(Collectors.toList());
+//		return users;
 	}
 
 	public UserDto getUserById(Long userId) {

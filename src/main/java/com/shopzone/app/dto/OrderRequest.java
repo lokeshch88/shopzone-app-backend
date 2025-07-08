@@ -9,20 +9,14 @@ public class OrderRequest {
 	
     private LocalDateTime orderDateTime;
  
-        private List<Long> productIds;
+        private List<VariantDTO> products;
         private Double totalAmount;
-
+        private List<OrderItemDto> items;
         
         
         public OrderRequest() {}
 
-        public List<Long> getProductIds() {
-            return productIds;
-        }
-
-        public void setProductIds(List<Long> productIds) {
-            this.productIds = productIds;
-        }
+      
 
         public Double getTotalAmount() {
             return totalAmount;
@@ -38,6 +32,30 @@ public class OrderRequest {
 
 		public void setOrderDateTime(LocalDateTime orderDateTime) {
 			this.orderDateTime = orderDateTime;
+		}
+
+
+
+		public List<VariantDTO> getProducts() {
+			return products;
+		}
+
+
+
+		public void setProducts(List<VariantDTO> products) {
+			this.products = products;
+		}
+
+
+
+		public List<OrderItemDto> getItems() {
+			return items;
+		}
+
+
+
+		public void setItems(List<OrderItemDto> items) {
+			this.items = items;
 		}
    
 
