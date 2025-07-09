@@ -2,5 +2,8 @@
 INSERT INTO seller (name, latitude, longitude, email, mobile, city, pincode, created_at) VALUES ('John\'s lifestyles', 28.6139, 77.2090, 'john@example.com', '9876543210',
   'Delhi', '110001', NOW());
   
+  //expected delivery 
+  insert into general_parameter (parameter, value) values ("expected_delivery", "0-25|1, 25-100|2, 100-200|3, 200-400|4, 400|5");
+  
 update general_parameter set is_active =1 where id=2;
   
