@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shopzone.app.entity.GeneralParameter;
+import com.shopzone.app.repo.GeneralParameterRepo;
 
 @Service
 public class GeneralParameterService {

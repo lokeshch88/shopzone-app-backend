@@ -95,7 +95,7 @@ public class OrderService {
 		order.setUpdatedAt(LocalDateTime.now());
 		EmailRequest req = new EmailRequest();
 
-		String subj = "Order " + status + orderId;
+		String subj = "Order " + status +": "+ orderId;
 
 		// fetch email id
 
@@ -149,7 +149,7 @@ public class OrderService {
 			dto.setUserId(order.getUser().getId());
 			dto.setTotalAmount(order.getTotalAmount());
 			dto.setStatus(order.getStatus());
-
+			dto.setCreatedAt(order.getCreatedAt());
 			// Map order items to item DTOs
 			List<OrderItemDto> itemDtos = order.getItems().stream().map(item -> {
 				OrderItemDto itemDto = new OrderItemDto();

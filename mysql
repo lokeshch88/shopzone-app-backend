@@ -1,0 +1,6 @@
+//seller insert 
+INSERT INTO seller (name, latitude, longitude, email, mobile, city, pincode, created_at) VALUES ('John\'s lifestyles', 28.6139, 77.2090, 'john@example.com', '9876543210',
+  'Delhi', '110001', NOW());
+  
+update general_parameter set is_active =1 where id=2;
+  
