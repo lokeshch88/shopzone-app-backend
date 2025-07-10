@@ -109,7 +109,7 @@ public class OrderService {
 		String resp = emailService.sendOrderConfirmedEmail(req);
 
 		if ("Notification email sent.".equals(resp)) {
-			System.out.println("order placed email sent");
+			log.info("Order status changed email sent");
 		}
 		return toResponse(orderRepository.save(order));
 	}

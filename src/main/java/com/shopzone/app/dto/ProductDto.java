@@ -68,6 +68,10 @@ public class ProductDto {
     private Long categoryId;
 
   private List<VariantDTO> variants;
+  
+  private List<String> variantColors;
+  private List<String> variantSizes;
+
 
     public BigDecimal getDiscountPercentage() {
         if (mrp != null && discountPrice != null && mrp.compareTo(BigDecimal.ZERO) > 0) {

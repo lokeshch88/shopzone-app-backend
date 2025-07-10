@@ -14,9 +14,16 @@ import com.shopzone.app.entity.Category;
 import com.shopzone.app.entity.Product;
 import com.shopzone.app.service.ProductService;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/products")
@@ -118,5 +125,18 @@ public class ProductController {
         }
     }
     
+    @GetMapping("/productvariant")
+    public ResponseEntity<Map<String, List<String>>> getProductsVariants() {
+        Map<String, List<String>> map = new HashMap<>();
+        
+        List<String> colorList = Arrays.asList("Red", "Blue", "Green", "Black", "White");
+        List<String> sizeList = Arrays.asList("S", "M", "L", "XL", "XXL");
+        
+        map.put("colors", colorList);
+        map.put("sizes", sizeList);
+        
+        return ResponseEntity.ok(map);
+    }
+
   
 }
