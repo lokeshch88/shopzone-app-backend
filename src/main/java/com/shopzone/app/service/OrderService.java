@@ -58,6 +58,7 @@ public class OrderService {
 			order.setStatus(OrderStatus.PENDING); // default status
 			order.setTotalAmount(request.getTotalAmount());
 			order.setCreatedAt(LocalDateTime.now());
+			order.setAddressId(request.getAddressId());
 			// generate uuid orderid
 			String orderId = RandomCodeUtil.generateOrderId();
 			log.info("Order id generated " + orderId);
@@ -123,6 +124,7 @@ public class OrderService {
 			dto.setUserId(order.getUser().getId());
 			dto.setTotalAmount(order.getTotalAmount());
 			dto.setCreatedAt(order.getCreatedAt());
+			dto.setStatus(order.getStatus());
 			// Map order items to item DTOs
 			List<OrderItemDto> itemDtos = order.getItems().stream().map(item -> {
 				OrderItemDto itemDto = new OrderItemDto();

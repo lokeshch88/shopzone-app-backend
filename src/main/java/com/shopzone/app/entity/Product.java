@@ -99,8 +99,18 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductVariant> variants;
 
+	@Column(name="compare_price")
+	private BigDecimal comparePrice;
     
-    public List<ProductVariant> getVariants() {
+    public BigDecimal getComparePrice() {
+		return comparePrice;
+	}
+
+	public void setComparePrice(BigDecimal comparePrice) {
+		this.comparePrice = comparePrice;
+	}
+
+	public List<ProductVariant> getVariants() {
 		return variants;
 	}
 

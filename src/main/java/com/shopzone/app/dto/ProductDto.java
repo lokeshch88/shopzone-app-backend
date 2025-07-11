@@ -1,6 +1,6 @@
 package com.shopzone.app.dto;
 
-
+import javax.persistence.Column;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -9,78 +9,79 @@ import java.util.List;
 
 public class ProductDto {
 
-    private Long id;
+	private Long id;
 
-    @NotNull
-    @Size(min = 3, max = 255)
-    private String name;
+	@NotNull
+	@Size(min = 3, max = 255)
+	private String name;
 
-    @NotNull
-    private String description;
+	@NotNull
+	private String description;
 
-    @NotNull
-    @DecimalMin(value = "0.01")
-    private BigDecimal price;
+	@NotNull
+	@DecimalMin(value = "0.01")
+	private BigDecimal price;
 
-    @Min(0)
-    private Integer quantityInStock;
+	@Min(0)
+	private Integer quantityInStock;
 
-    @NotNull
-    @Size(min = 2, max = 100)
-    private String brand;
+	@NotNull
+	@Size(min = 2, max = 100)
+	private String brand;
 
 //    @NotNull
 //    @Size(min = 2, max = 100)
 //    private String category;
 
-    @NotNull
-    @Pattern(regexp = "^[A-Za-z0-9_-]+$")
-    private String sku;
+	@NotNull
+	@Pattern(regexp = "^[A-Za-z0-9_-]+$")
+	private String sku;
 
-    private Double weight;
+	private Double weight;
 
-    private String dimensions;
+	private String dimensions;
 
-    private Date createdAt;
+	private Date createdAt;
 
-    private Date updatedAt;
+	private Date updatedAt;
 
-    private Boolean isActive;
+	private Boolean isActive;
 
-    private String imageUrl;
+	private String imageUrl;
 
-    private String manufacturer;
+	private String manufacturer;
 
-    @DecimalMin(value = "0.0")
-    @DecimalMax(value = "5.0")
-    private Double rating;
+	@DecimalMin(value = "0.0")
+	@DecimalMax(value = "5.0")
+	private Double rating;
 
-    @DecimalMin(value = "0.01")
-    private BigDecimal mrp;
+	@DecimalMin(value = "0.01")
+	private BigDecimal mrp;
 
-    @DecimalMin(value = "0.01")
-    private BigDecimal discountPrice;
+	@DecimalMin(value = "0.01")
+	private BigDecimal discountPrice;
 
-    // Optional calculated field (transient in response)
-    private BigDecimal discountPercentage;
-  
-  @NotNull
-    private Long categoryId;
+	// Optional calculated field (transient in response)
+	private BigDecimal discountPercentage;
 
-  private List<VariantDTO> variants;
-  
-  private List<String> variantColors;
-  private List<String> variantSizes;
+	@NotNull
+	private Long categoryId;
+
+	private List<VariantDTO> variants;
 
 
-    public BigDecimal getDiscountPercentage() {
-        if (mrp != null && discountPrice != null && mrp.compareTo(BigDecimal.ZERO) > 0) {
-            return (mrp.subtract(discountPrice))
-                    .divide(mrp, 2, BigDecimal.ROUND_HALF_UP)
-                    .multiply(BigDecimal.valueOf(100));
-        }
-        return BigDecimal.ZERO;
-    }
+	private BigDecimal comparePrice;
+	
+	private List<String> variantColors;
+	private List<String> variantSizes;
+
+	public BigDecimal getDiscountPercentage() {
+		if (mrp != null && discountPrice != null && mrp.compareTo(BigDecimal.ZERO) > 0) {
+			return (mrp.subtract(discountPrice)).divide(mrp, 2, BigDecimal.ROUND_HALF_UP)
+					.multiply(BigDecimal.valueOf(100));
+		}
+		return BigDecimal.ZERO;
+	}
 
 	public Long getId() {
 		return id;
@@ -129,7 +130,6 @@ public class ProductDto {
 	public void setBrand(String brand) {
 		this.brand = brand;
 	}
-
 
 	public String getSku() {
 		return sku;
@@ -239,6 +239,12 @@ public class ProductDto {
 		this.variants = variants;
 	}
 
-   
-}
+	public BigDecimal getComparePrice() {
+		return comparePrice;
+	}
 
+	public void setComparePrice(BigDecimal comparePrice) {
+		this.comparePrice = comparePrice;
+	}
+
+}

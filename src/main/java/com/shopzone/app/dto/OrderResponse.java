@@ -11,6 +11,8 @@ public class OrderResponse {
     private Long userId;
     private OrderStatus status;
     private List<OrderItemDto> items;
+    private AddressDto deliveryAddress;
+    private PaymentDto payemntDetails;
     private Double totalAmount;
 
 	private LocalDateTime createdAt;
@@ -73,4 +75,30 @@ public class OrderResponse {
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public AddressDto getDeliveryAddress() {
+		return deliveryAddress;
+	}
+
+	public void setDeliveryAddress(AddressDto deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
+	}
+
+	public PaymentDto getPayemntDetails() {
+		return payemntDetails;
+	}
+
+	public void setPayemntDetails(PaymentDto payemntDetails) {
+		this.payemntDetails = payemntDetails;
+	}
+	
+	
 }

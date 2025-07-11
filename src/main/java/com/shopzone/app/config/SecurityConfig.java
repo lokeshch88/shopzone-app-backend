@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .csrf().disable()   //csrf disable for ddl reqs
         .authorizeRequests()
         .antMatchers("/user/login", "/user/reset-password", "/user/send-otp", "/user/verify-otp",
-     		   "/user/check-availability", "/user/register", "/products/all", "/products/{productId}", "/user/test-redis"
+     		   "/user/check-availability", "/user/register", "/products/all", "/products/{productId}", "/products/category/{category}","/user/test-redis"
      		   ).permitAll() // allow login endpoint without auth
         .anyRequest().authenticated() // protect all other endpoints
 //        .and()

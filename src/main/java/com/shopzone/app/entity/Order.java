@@ -43,7 +43,20 @@ public class Order {
    	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
    	private List<OrderItem> items;
 
-   	public List<OrderItem> getItems() {
+    @Column(name = "address_id")
+    private Long addressId;
+   
+    
+    
+   	public Long getAddressId() {
+		return addressId;
+	}
+
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
+
+	public List<OrderItem> getItems() {
    	    return items;
    	}
 
