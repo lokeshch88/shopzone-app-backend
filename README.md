@@ -47,10 +47,10 @@ This is a backend project for a Shopping App built using Spring Boot. It include
 # 🏨 ShopZone App v1.0.1 – Spring Boot Backend
 This is a new version of shopzone app. Maintain in new private repository.
 
-## ✅ v1.0.1 – Enhanced Features
+#### 🔄 New Features in v1.0.1
 This version adds advanced functionalities on top of v1.0.0:
-🔄 New in v1.0.1:
-🔐 Razorpay payment gateway integration
-❤️ Wishlist management
-⚙️ Workflow-based order handling (jBPM)
-🧠 Redis-based caching for product and coupon data
+
+- 🔐 **Razorpay Payment Gateway** integration
+- ❤️ **Wishlist Management**
+- ⚙️ **Workflow-based Order Management** using jBPM
+- 🧠 **Redis Caching** for fast access to product and coupon data
