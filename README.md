@@ -1,4 +1,4 @@
-# 🏨 ShopZone App – Spring Boot Backend
+# 🏨 ShopZone App v1.0.0 – Spring Boot Backend
 
 This is a backend project for a Shopping App built using Spring Boot. It includes secure authentication using JWT, role-based access control, async email notifications, and REST APIs for managing orders.
 
@@ -37,7 +37,20 @@ This is a backend project for a Shopping App built using Spring Boot. It include
 - Role-based protected routes (e.g., only admin can delete/update products, orders etc.)
 
 ## 🛠️ Setup Instructions
-
 1. Clone the repo:
    git clone https://github.com/lokeshch88/shopzone-app-backend.git
-2. 
+2. Update application.properties
+3. Run the app: mvn spring-boot:run
+4. The backend will start on: http://localhost:8080/
+
+-------------------------------------------------------------------
+# 🏨 ShopZone App v1.0.1 – Spring Boot Backend
+This is a new version of shopzone app. Maintain in new private repository.
+
+## ✅ v1.0.1 – Enhanced Features
+This version adds advanced functionalities on top of v1.0.0:
+🔄 New in v1.0.1:
+🔐 Razorpay payment gateway integration
+❤️ Wishlist management
+⚙️ Workflow-based order handling (jBPM)
+🧠 Redis-based caching for product and coupon data
